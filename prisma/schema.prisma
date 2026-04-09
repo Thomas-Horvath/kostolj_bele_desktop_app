@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  // A seed és a sima Node-alapú scriptek miatt itt a JS-alapú kliensgenerátort használjuk.
+  // Ezt a Next és a Prisma CLI is stabilan ugyanúgy tudja importálni.
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  name          String?
+  username      String   @unique
+  email         String   @unique
+  emailVerified DateTime @default(now())
+  password      String
+  role          String   @default("USER")
+
+  recipes  Recipe[]   @relation("UserRecipes")
+  Favorite Favorite[]
+  ratings  Rating[]
+}
+
+model Recipe {
+  id       Int    @id @default(autoincrement())
+  name     String
+  slug     String @unique
+  imageURL String
+  note     String?
+  rate     Float? @default(4.0)
+
+  ingredients Ingredient[]
+  steps       Step[]
+
+  typeId Int
+  type   Type @relation(fields: [typeId], references: [id], onDelete: Cascade)
+
+  authorId    String
+  author      User       @relation("UserRecipes", fields: [authorId], references: [id], onDelete: Cascade)
+  favoritedBy Favorite[]
+  ratings     Rating[]
+}
+
+model Type {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  paramName String   @unique
+  recipes   Recipe[]
+}
+
+model Ingredient {
+  id       Int    @id @default(autoincrement())
+  name     String
+  amount   String
+  unit     String?
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model Step {
+  id       Int    @id @default(autoincrement())
+  content  String
+  timer    Int
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model Favorite {
+  userId   String
+  recipeId Int
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, recipeId])
+}
+
+model Rating {
+  id       Int    @id @default(autoincrement())
+  userId   String
+  recipeId Int
+  score    Float // 1-5
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+}

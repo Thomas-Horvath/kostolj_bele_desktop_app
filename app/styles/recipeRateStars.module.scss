@@ -1,0 +1,85 @@
+@use "./variables" as *;
+
+.rate {
+    font-style: italic;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.rate_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+
+
+    .vote_status {
+        font-size: 1.1rem;
+        letter-spacing: .1rem;
+        color: gray;
+        margin-top: 1.2rem;
+
+        &.active {
+            color: $main-green; // ha be van jelentkezve
+        }
+
+        &.disabled {
+            margin-top: .5rem;
+            color: gray; // ha nincs bejelentkezve
+        }
+
+        .link {
+            color: $orange;
+        }
+    }
+}
+
+.star_container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.star_container_rate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.star_span {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.star_span_rate {
+    font-size: 34px;
+    display: flex;
+    align-items: center;
+}
+
+.star_gold {
+    color: #ffc107;
+}
+
+.star_empty {
+    color: #ccc;
+}
+
+
+
+.pointer {
+    cursor: pointer;
+}
+
+.default {
+    cursor: default;
+}

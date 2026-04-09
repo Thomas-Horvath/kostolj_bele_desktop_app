@@ -1,0 +1,78 @@
+@use "sass:color";
+@use "./variables" as *;
+
+.page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.hero {
+    background:
+        linear-gradient(135deg, rgba(#fff, 0.94), rgba(#fff6e3, 0.92)),
+        linear-gradient(120deg, rgba($orange, 0.14), rgba($dark-green, 0.08));
+    border: 1px solid rgba($orange, 0.18);
+    border-radius: 3px;
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
+    padding: 1.75rem;
+
+    h1 {
+        font-size: $step-4;
+        margin-bottom: 0.75rem;
+    }
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18rem;
+    font-size: $step--1;
+    color: color.adjust($orange, $lightness: -12%);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.intro {
+    max-width: 62ch;
+    line-height: 1.8;
+    color: rgba($text, 0.82);
+}
+
+.content {
+    display: grid;
+    gap: 1rem;
+}
+
+.section {
+    background: rgba(#fff, 0.9);
+    border: 1px solid rgba($dark-green, 0.12);
+    border-radius: 3px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+    padding: 1.4rem;
+
+    h2 {
+        font-size: $step-1;
+        margin-bottom: 0.75rem;
+    }
+
+    p {
+        line-height: 1.85;
+        margin-bottom: 0.85rem;
+        color: rgba($text, 0.84);
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+}
+
+@media (min-width: 768px) {
+    .page {
+        padding-top: 2.5rem;
+    }
+
+    .section {
+        padding: 1.6rem;
+    }
+}

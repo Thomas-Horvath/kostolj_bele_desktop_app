@@ -1,0 +1,133 @@
+@use "./variables" as *;
+
+
+.container {
+    max-width: 1400px;
+    height: auto;
+    margin: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+
+    .main_container {
+        width: 100%;
+
+        .title_row {
+            margin-bottom: 2rem;
+        }
+
+
+        .main_title {
+            padding-bottom: 1rem;
+            font-size: $step-3;
+            position: relative;
+            border-bottom: 3px solid $border-gray ;
+            margin-bottom: 0.75rem;
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -3px;
+                background: $dark-green;
+                width: 60px;
+                height: 3px;
+
+            }
+
+        }
+
+        .result_summary {
+            color: rgba($text, 0.72);
+            line-height: 1.7;
+        }
+
+        .card_container {
+            display: grid;
+            grid-template-columns: 1fr;
+            place-items: center;
+
+            gap: 2rem;
+
+
+        }
+
+        .empty_state {
+            border: 1px dashed rgba($border-gray, 0.75);
+            border-radius: 3px;
+            background: rgba(#fff7e6, 0.8);
+            padding: 1.25rem;
+            line-height: 1.8;
+            margin-top: 2rem;
+
+            h2 {
+                margin-bottom: 0.5rem;
+                font-size: $step-1;
+            }
+        }
+
+
+    }
+
+}
+
+@media (min-width: 560px) {
+    .container {
+        .main_container {
+            .card_container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    }
+
+}
+
+@media (min-width: 768px) {
+
+
+    .container {
+        .main_container {
+            .card_container {
+                grid-template-columns: 1fr;
+            }
+
+            .main_title {
+                font-size: $step-4;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+@media (min-width: 992px) {
+    .container {
+
+
+        .main_container {
+            .card_container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+
+
+        .main_container {
+            .card_container {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+    }
+}
+
+
+

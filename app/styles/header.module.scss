@@ -1,0 +1,153 @@
+@use "sass:color";
+@use "./variables" as *;
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: $orange;
+    color: $text;
+    height: 4.4rem;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+
+    .header_wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1400px;
+        margin: 0 auto;
+        height: 100%;
+        padding: 0 1.6rem;
+
+        .logo_group {
+            padding: .7rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: $text;
+            white-space: nowrap;
+
+
+
+            .logo {
+                width: 2rem;
+                height: 2rem;
+            }
+
+            span {
+                font: {
+                    size: 1.7rem;
+                    weight: bold;
+                    family: $font-dancing;
+                }
+            }
+        }
+
+        .newrecipe {
+            white-space: nowrap;
+        }
+
+        // nav menu
+        .nav {
+            max-height: 0; //* !!! nullázzuk a magaságát!
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 4.4rem;
+            background-color: $orange;
+            opacity: 0;
+            visibility: hidden;
+
+
+            &.open {
+                border-top: 2px solid $text;
+                max-height: 300px; //* hoozáadjuk a magasságot
+                transition: max-height 0.5s ease;
+                visibility: visible;
+                opacity: 1;
+            }
+
+            a , .logout_btn {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                padding: 1rem;
+                color: $text;
+                text-decoration: none;
+                font-size: 1.2rem;
+                font-weight: 600;
+                letter-spacing: .125rem;
+                border-bottom: 1px solid color.adjust($text, $lightness: 40%);
+                background-color: $orange;
+                border: none;
+                font-family: $font-lora, Arial, Helvetica, sans-serif;
+                cursor: pointer;
+            }
+          
+        }
+
+
+        .hamburger_icon {
+            font-size: 2.4rem;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+    }
+
+}
+
+@media (min-width: 992px) {
+    .header {
+
+        .hamburger_icon {
+            display: none;
+        }
+
+        .header_wrapper {
+            .logo_group {
+                .logo {
+                    width: 3rem;
+                    height: 3rem;
+                }
+
+                span {
+                    font: {
+                        size: 2.2rem;
+                        weight: bold;
+                        family: $font-dancing;
+                    }
+                }
+            }
+
+            .nav {
+                padding: 0;
+                max-height: 100%;
+                height: 100%;
+                position: static;
+                flex-direction: row;
+                opacity: 1;
+                transition: none;
+                visibility: visible;
+                border: none;
+
+
+                a , .logout_btn {
+                    border: none;
+                    height: 100%;
+
+                    &:hover {
+                        background-color: color.adjust($orange, $lightness: -10%);
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+}

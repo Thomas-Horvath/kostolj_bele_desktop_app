@@ -1,0 +1,40 @@
+@use "./variables" as *;
+
+.spinner_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 4.4rem);
+    background: transparent;
+
+
+    .spinner {
+        width: 60px;
+        height: 60px;
+        border: 6px solid $white-smoke; // világos szürke kör
+        border-top-color: $main-gold; // kék (pl. Tailwind blue-600)
+        border-radius: 50%;
+        animation: spin 1.4s linear infinite;
+        margin: auto; // középre igazításhoz
+    }
+
+}
+
+
+@media (min-width: 768px) {
+    .spinner_container {
+        .spinner {
+            width: 150px;
+            height: 150px;
+            border-width: 10px; // világos szürke kör
+        }
+    }
+}
+
+
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

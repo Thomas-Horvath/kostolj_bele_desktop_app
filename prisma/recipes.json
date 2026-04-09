@@ -1,0 +1,558 @@
+[
+  {
+    "name": "Rostélyos sült",
+    "slug": "rostelyos-sult",
+    "imageURL": "rostelyos-sult.jpg",
+    "rate": 4.5,
+    "type": 2,
+    "ingredients": [
+      {
+        "name": "marha sült",
+        "amount": "1",
+        "unit": "db"
+      },
+      {
+        "name": "barna mártáskeverék",
+        "amount": "1",
+        "unit": "csomag"
+      },
+      {
+        "name": "szárított olasz salátaöntet keverék",
+        "amount": "1",
+        "unit": "csomag"
+      },
+      {
+        "name": "száraz ranch dressing mix",
+        "amount": "1",
+        "unit": "csomag"
+      },
+      {
+        "name": "víz",
+        "amount": "1/2",
+        "unit": "csésze"
+      }
+    ],
+    "steps": [
+      {
+        "content": "Helyezzük a marhapörköltet a cserépbe.",
+        "timer": 0
+      },
+      {
+        "content": "Keverjük össze a szárított keverékeket egy tálban, és szórjuk rá a sültre.",
+        "timer": 0
+      },
+      {
+        "content": "Öntsük a vizet a sültre.",
+        "timer": 0
+      },
+      {
+        "content": "Főzzük alacsony hőfokon, 7-9 órán keresztül.",
+        "timer": 420
+      }
+    ]
+  },
+  {
+    "name": "Sült spárga",
+    "slug": "sult-sparga",
+    "imageURL": "sult-sparga.jpg",
+    "rate": 4.2,
+    "type": 3,
+    "ingredients": [
+      {
+        "name": "spárga",
+        "amount": "1",
+        "unit": "font"
+      },
+      {
+        "name": "olívaolaj",
+        "amount": "1 1/2",
+        "unit": "ek"
+      },
+      {
+        "name": "kóser só",
+        "amount": "1/2",
+        "unit": "tk"
+      }
+    ],
+    "steps": [
+      {
+        "content": "Melegítsük elő a sütőt 425 °F-ig.",
+        "timer": 0
+      },
+      {
+        "content": "Vágjuk le a spárga alsó részét és dobjuk ki.",
+        "timer": 0
+      },
+      {
+        "content": "Hámozzuk meg a spárgát a száránál, 2-3 hüvelykben",
+        "timer": 0
+      },
+      {
+        "content": "Helyezzük a spárgát a fóliával bélelt sütőlapra és szitáljuk meg az olívaolajjal.",
+        "timer": 0
+      },
+      {
+        "content": "Szórjuk meg sóval.",
+        "timer": 0
+      },
+      {
+        "content": "Forgassuk a spárgát, amíg egyenletesen be nem vonódik olajjal és sóval.",
+        "timer": 0
+      },
+      {
+        "content": "10-15 percig pörköljük, a szárak vastagságától függően.",
+        "timer": 10
+      }
+    ]
+  },
+  {
+    "name": "Big Night Pizza",
+    "slug": "big-night-pizza",
+    "imageURL": "big-night-pizza.webp",
+    "rate": 3.5,
+    "type": 6,
+    "ingredients": [
+      {
+        "name": "élesztő",
+        "amount": "5",
+        "unit": "tk"
+      },
+      {
+        "name": "liszt",
+        "amount": "5",
+        "unit": "csésze"
+      },
+      {
+        "name": "növényi olaj",
+        "amount": "4",
+        "unit": "ek"
+      },
+      {
+        "name": "cukor",
+        "amount": "2",
+        "unit": "ek"
+      },
+      {
+        "name": "só",
+        "amount": "2",
+        "unit": "tk"
+      },
+      {
+        "name": "forró víz",
+        "amount": "2",
+        "unit": "csésze"
+      },
+      {
+        "name": "pizza szósz",
+        "amount": "1/4",
+        "unit": "csésze"
+      },
+      {
+        "name": "mozzarella sajt",
+        "amount": "3/4",
+        "unit": "csésze"
+      }
+    ],
+    "steps": [
+      {
+        "content": "Adjunk forró vizet az élesztőhöz egy nagy tálban, és hagyjuk ülni 15 percig.",
+        "timer": 15
+      },
+      {
+        "content": "Keverje össze az olajat, a cukrot, a sót és a lisztet, és hagyja 1 órán át ülni.",
+        "timer": 60
+      },
+      {
+        "content": "Gyúrjuk meg a tésztát és terítsük egy serpenyőre.",
+        "timer": 0
+      },
+      {
+        "content": "Terítsük szét a pizzamártást és szórjuk rá a sajtot.",
+        "timer": 0
+      },
+      {
+        "content": "Adjuk hozzá a feltéteket",
+        "timer": 0
+      },
+      {
+        "content": "Süssük 400 fok Fahrenheiten 15 percig.",
+        "timer": 15
+      }
+    ]
+  },
+  {
+    "name": "Áfonyával és almával töltött tök",
+    "slug": "afonyaval-es-almaval-toltott-tok",
+    "imageURL": "toltott-tok.jpg",
+    "rate": 4.8,
+    "type": 4,
+    "ingredients": [
+      {
+        "name": "tök",
+        "amount": "2",
+        "unit": "db"
+      },
+      {
+        "name": "forrásban lévő víz",
+        "amount": "1",
+        "unit": "db"
+      },
+      {
+        "name": "1,4 hüvelykes darabokra vágott alma",
+        "amount": "2",
+        "unit": "db"
+      },
+      {
+        "name": "szárított áfonya",
+        "amount": "1/2",
+        "unit": "csésze"
+      },
+      {
+        "name": "fahéj",
+        "amount": "1",
+        "unit": "tk"
+      },
+      {
+        "name": "olvasztott vaj",
+        "amount": "2",
+        "unit": "ek"
+      }
+    ],
+    "steps": [
+      {
+        "content": "Vágja a tököt felére és távolítsa el a magokat.",
+        "timer": 0
+      },
+      {
+        "content": "Helyezze a tököt a vágott oldalával lefelé a sütőedénybe.",
+        "timer": 0
+      },
+      {
+        "content": "Öntsön 1/4 liter vizet az edénybe.",
+        "timer": 0
+      },
+      {
+        "content": "Süssük 30 percig, 350 fokon.",
+        "timer": 30
+      },
+      {
+        "content": "Vegye ki a tököt a sütőből, töltse fel keverékkel.",
+        "timer": 0
+      },
+      {
+        "content": "Süssük még 30–40 percig.",
+        "timer": 30
+      }
+    ]
+  },
+  {
+    "name": "Mic's Yorkshire Puds",
+    "slug": "mics-yorkshire-puds",
+    "imageURL": "yorkshire-pudding.jpg",
+    "rate": 4.6,
+    "type": 4,
+    "ingredients": [
+      {
+        "name": "egyszerű liszt",
+        "amount": "200",
+        "unit": "g"
+      },
+      {
+        "name": "tojás",
+        "amount": "3",
+        "unit": "db"
+      },
+      {
+        "name": "tej",
+        "amount": "300",
+        "unit": "ml"
+      },
+      {
+        "name": "növényi olaj",
+        "amount": "3",
+        "unit": "ek"
+      }
+    ],
+    "steps": [
+      {
+        "content": "Helyezze a lisztet és néhány ízesítőt egy nagy tálba.",
+        "timer": 0
+      },
+      {
+        "content": "Keverje össze a tojásokat egyenként.",
+        "timer": 0
+      },
+      {
+        "content": "Hűtsük le legalább 30 percig a hűtőszekrényben.",
+        "timer": 30
+      },
+      {
+        "content": "A sütőt melegítsük 220 ° C-ig / 7. gázjelzésig.",
+        "timer": 0
+      },
+      {
+        "content": "Öntsük az olajat egy 8 lyukú muffin formába.",
+        "timer": 0
+      },
+      {
+        "content": "Melegítsük 5 percig.",
+        "timer": 5
+      },
+      {
+        "content": "Tegyük bele a tésztát a formába.",
+        "timer": 0
+      },
+      {
+        "content": "Süssük 30 percig, amíg jól megbarnul és fel nem emelkedik.",
+        "timer": 30
+      }
+    ]
+  },
+  {
+    "name": "Régimódi zabliszt sütik",
+    "slug": "regimodi-zabliszt-sutik",
+    "imageURL": "regimodi-zabliszt-sutik.jpg",
+    "rate": 4,
+    "type": 4,
+    "ingredients": [
+      {
+        "name": "mazsola",
+        "amount": "1",
+        "unit": "csésze"
+      },
+      {
+        "name": "csésze víz",
+        "amount": "1",
+        "unit": "db"
+      },
+      {
+        "name": "cukor",
+        "amount": "1 1/2",
+        "unit": "csésze"
+      },
+      {
+        "name": "liszt",
+        "amount": "2 1/2",
+        "unit": "csésze"
+      },
+      {
+        "name": "szóda",
+        "amount": "1",
+        "unit": "tk"
+      },
+      {
+        "name": "só",
+        "amount": "1",
+        "unit": "tk"
+      },
+      {
+        "name": "fahéj",
+        "amount": "1",
+        "unit": "tk"
+      },
+      {
+        "name": "sütőpor",
+        "amount": "1/2",
+        "unit": "tk"
+      },
+      {
+        "name": "szegfűszeg",
+        "amount": "1/2",
+        "unit": "tk"
+      },
+      {
+        "name": "zab",
+        "amount": "2",
+        "unit": "csésze"
+      },
+      {
+        "name": "apróra vágott dió",
+        "amount": "1/2",
+        "unit": "csésze"
+      }
+    ],
+    "steps": []
+  },
+  {
+    "name": "Áfonya zabliszt szeletek",
+    "slug": "afonya-zabliszt-szeletek",
+    "imageURL": "afonya-zabliszt-szeletek.jpg",
+    "rate": 3.9,
+    "type": 4,
+    "ingredients": [
+      {
+        "name": "zabpehely, (nem azonnali)",
+        "amount": "2-1 / 2",
+        "unit": "csésze"
+      },
+      {
+        "name": "általános célú liszt",
+        "amount": "1-1 / 4",
+        "unit": "csésze"
+      },
+      {
+        "name": "reszelt narancshéj",
+        "amount": "1",
+        "unit": "ek"
+      },
+      {
+        "name": "só",
+        "amount": "1/4",
+        "unit": "tk"
+      },
+      {
+        "name": "kockás hideg vaj",
+        "amount": "1",
+        "unit": "csésze"
+      },
+      {
+        "name": "csomagolt barna cukor",
+        "amount": "3/4",
+        "unit": "csésze"
+      },
+      {
+        "name": "friss áfonya",
+        "amount": "3",
+        "unit": "csésze"
+      },
+      {
+        "name": "granulált cukor",
+        "amount": "1/2",
+        "unit": "csésze"
+      },
+      {
+        "name": "narancslé",
+        "amount": "1/3",
+        "unit": "csésze"
+      },
+      {
+        "name": "kukoricakeményítő",
+        "amount": "4",
+        "unit": "tk"
+      }
+    ],
+    "steps": []
+  },
+  {
+    "name": "Curry csirke saláta",
+    "slug": "curry-csirke-salata",
+    "imageURL": "curry-csirke-salata.jpg",
+    "rate": 4.5,
+    "type": 1,
+    "ingredients": [
+      {
+        "name": "bőr nélküli, csont nélküli csirkemell, hosszában felére csökkent",
+        "amount": "3",
+        "unit": "db"
+      },
+      {
+        "name": "majonéz",
+        "amount": "1/2",
+        "unit": "csésze"
+      },
+      {
+        "name": "citromhéj",
+        "amount": "1",
+        "unit": "ek"
+      },
+      {
+        "name": "citromlé",
+        "amount": "1",
+        "unit": "ek"
+      },
+      {
+        "name": "currypor",
+        "amount": "1 1/2",
+        "unit": "tk"
+      },
+      {
+        "name": "só",
+        "amount": "1/4",
+        "unit": "tk"
+      },
+      {
+        "name": "érett mangó, kockára vágva",
+        "amount": "2",
+        "unit": "db"
+      },
+      {
+        "name": "szárított áfonya",
+        "amount": "1/4",
+        "unit": "csésze"
+      },
+      {
+        "name": "zöld hagyma, vékonyra szeletelt",
+        "amount": "2",
+        "unit": "db"
+      },
+      {
+        "name": "zeller szár, apróra vágva",
+        "amount": "1",
+        "unit": "db"
+      },
+      {
+        "name": "bostoni saláta",
+        "amount": "6",
+        "unit": "levél"
+      },
+      {
+        "name": "angol muffin, pirított",
+        "amount": "6",
+        "unit": "db"
+      }
+    ],
+    "steps": []
+  },
+  {
+    "name": "Curry lencse és rizs",
+    "slug": "curry-lencse-es-rizs",
+    "imageURL": "lentils3.jpg",
+    "rate": 3.7,
+    "type": 3,
+    "ingredients": [
+      {
+        "name": "marhameatleves",
+        "amount": "1",
+        "unit": "kvart"
+      },
+      {
+        "name": "szárított zöld lencse",
+        "amount": "1",
+        "unit": "csésze"
+      },
+      {
+        "name": "basmati rizs",
+        "amount": "1/2",
+        "unit": "csésze"
+      },
+      {
+        "name": "currypor",
+        "amount": "1",
+        "unit": "tk"
+      },
+      {
+        "name": "só",
+        "amount": "1",
+        "unit": "tk"
+      }
+    ],
+    "steps": [
+      {
+        "content": "Forraljuk fel a levest alacsony forrásig.",
+        "timer": 0
+      },
+      {
+        "content": "Adjunk hozzá curry port és sót.",
+        "timer": 0
+      },
+      {
+        "content": "Főzzük a lencséket 20 percig.",
+        "timer": 20
+      },
+      {
+        "content": "Adjunk hozzá rizst és pároljuk 20 percig.",
+        "timer": 20
+      }
+    ]
+  }
+]

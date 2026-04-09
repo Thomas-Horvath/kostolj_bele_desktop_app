@@ -1,0 +1,105 @@
+@use "./variables" as *;
+@use "./mixin" as *;
+
+
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: $text;
+  background: $bg;
+  font-family: $font-lora, Arial, Helvetica, sans-serif;
+  padding-top: 4.4rem;
+  overflow: hidden;
+  min-width: 350px;
+  position: relative;
+  min-height: 100vh;
+}
+
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a,
+.hamburger_icon {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.section {
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+li {
+  list-style: none;
+}
+
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+
+.main {
+  background: url('/bg4.svg');
+  background-position: top left;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+
+
+
+.btn-green {
+  @include btn-content($dark-green, $white );
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-orange {
+  @include btn-content($orange, $text );
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-green-border {
+  @include btn-content(transparent, $dark-green );
+  border: 1px solid $dark-green;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    transform: none;
+  }
+
+}
+
+.no-hover {
+  .btn-green:hover {
+    background: $dark-green;
+  }
+
+  .btn-green:active , .btn.orange:active{
+    transform: scale(1);
+  }
+
+  .btn-orange:hover {
+    background: $orange; 
+
+  }
+
+}

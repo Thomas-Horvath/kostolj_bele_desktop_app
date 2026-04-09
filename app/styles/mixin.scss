@@ -1,0 +1,50 @@
+@use "sass:color";
+@use "./variables" as *;
+
+
+// button style
+@mixin btn-content($background, $color) {
+  border: none;
+  outline: none;
+  width: fit-content;
+  padding: .4rem 1.3rem;
+  border-radius: 3px;
+  box-shadow: $box-shadow;
+  background-color: $background;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color;
+  letter-spacing: .1rem;
+  transition: transform .07s ease-in-out;
+  margin: auto;
+
+  &:hover {
+    background: color.scale($background, $lightness: -10%);
+
+  }
+
+
+
+
+
+
+
+  &:active {
+    transform: scale(.99);
+  }
+}
+
+
+
+
+
+
+%flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

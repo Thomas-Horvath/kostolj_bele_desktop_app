@@ -1,0 +1,119 @@
+@use "./variables" as *;
+
+.aside {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(#fff, 0.9), rgba(#f7f2e8, 0.86));
+    border: 1px solid rgba($border-gray, 0.55);
+    border-radius: 3px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+
+    .category_container {
+        padding: .5rem .5rem 2rem .5rem;
+        border-radius: 3px;
+
+        h2 {
+
+            padding: 1rem .5rem;
+            border-bottom: 3px solid $border-gray;
+            margin-bottom: 1rem;
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -3px;
+                background: $dark-green;
+                width: 60px;
+                height: 3px;
+
+            }
+        }
+
+        li {
+            border-bottom: 1px solid $border-gray;
+
+            &:hover {
+                background: #88888850;
+            }
+
+            a {
+                padding: .5rem;
+                display: flex;
+                height: 100%;
+                width: 100%;
+                transition: transform .1s ease-in-out;
+
+                &:hover {
+                    color: $dark-green;
+                    transform: translateX(10px);
+                }
+            }
+        }
+    }
+
+    .about_container {
+        margin: 1rem 0;
+        padding: .5rem .5rem 2rem .5rem;
+   
+        border-radius: 3px;
+
+        h2 {
+
+            padding: 1rem .5rem;
+            border-bottom: 3px solid $border-gray;
+            margin-bottom: 1rem;
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -3px;
+                background: $dark-green;
+                width: 60px;
+                height: 3px;
+
+            }
+        }
+
+        & input {
+            width: 100%;
+            font-size: 1rem;
+            padding: .85rem 1rem;
+            color: $text;
+            font-family: inherit;
+            border: 1px solid rgba($dark-green, 0.55);
+            border-radius: 3px;
+            margin-bottom: .75rem;
+            background: rgba(#fff, 0.92);
+
+            &:active,
+            &:focus {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba($dark-green, 0.12);
+            }
+        }
+
+        .help_text {
+            font-size: $step--1;
+            color: rgba($text, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        & button {
+            margin-left: auto;
+            margin-right: 0;
+            width: 150px;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .aside {
+        width: 100%;
+        height: auto;
+    }
+
+}

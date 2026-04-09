@@ -1,0 +1,364 @@
+@use "./variables" as *;
+
+.home {
+    min-height: 100vh;
+
+    .img_container {
+        width: 100%;
+        height: 200px;
+        position: relative;
+
+
+
+        .banner_img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            box-shadow: $box-shadow;
+            z-index: 1;
+            filter: drop-shadow();
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -10px;
+            width: 105%;
+            height: 105%;
+            background-color: rgba(0, 0, 0, 0.4);
+
+        }
+
+        .text_wrapper {
+            max-width: 1400px;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            z-index: 1;
+
+
+            .text_container {
+                z-index: 2;
+                padding: 1rem;
+                background: $dark-green;
+                width: 100%;
+                height: 8.9rem;
+                display: flex;
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: center;
+
+                h1 {
+                    font-size: $step-5;
+                    color: $yellow;
+                }
+
+                p {
+                    margin-top: .3rem;
+                    color: $white-smoke;
+                    font-size: $step-2;
+                }
+            }
+        }
+    }
+
+    .content {
+        max-width: 1400px;
+        height: auto;
+        margin: auto;
+        padding: 10rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .main_container {
+            width: 100%;
+            padding: 1 1rem;
+
+            .main_title {
+                padding-bottom: 1rem;
+                font-size: $step-3;
+                position: relative;
+                border-bottom: 3px solid $border-gray ;
+                margin-bottom: 2rem;
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    bottom: -3px;
+                    background: $dark-green;
+                    width: 60px;
+                    height: 3px;
+
+                }
+            }
+
+            .card_container {
+                display: grid;
+                grid-template-columns: 1fr;
+                place-items: center;
+                gap: 2rem;
+            }
+        }
+
+
+
+
+    }
+
+
+
+    .subscribtion {
+        background: $orange;
+        padding: 2rem;
+        text-align: center;
+
+        h3 {
+            font-size: $step-4;
+        }
+
+        h4 {
+            font-size: $step-1;
+            margin: 1rem 0;
+        }
+
+        .form_container {
+            max-width: 1400px;
+            margin: auto;
+
+            .input_content {
+
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                margin: 1rem auto;
+                max-width: 1000px;
+
+            }
+
+            .input {
+                height: 2.5rem;
+                flex: 1;
+                padding: 0 1rem;
+                font-size: 1.2rem;
+                font-family: inherit;
+                border: 1px solid $dark-green;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            .checkbox_container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+
+                .checkbox {
+                    display: none; // Eredeti checkbox elrejtése
+                }
+
+                .custom_checkbox {
+                    width: 22px;
+                    height: 22px;
+                    border: 2px solid $dark-green;
+                    border-radius: 3px;
+                    background-color: $white;
+                    position: relative;
+                }
+
+                // Pipa hozzáadása, amikor a checkbox be van jelölve
+                .checkbox:checked+.custom_checkbox {
+                    background-color: $dark-green;
+                    border-color: $dark-green;
+                }
+
+                .checkbox:checked+.custom_checkbox::after {
+                    content: "✓";
+                    position: absolute;
+                    top: 45%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    font-size: 1.2rem;
+                }
+
+            }
+
+        }
+
+        .subscribe_btn {
+            margin: 0;
+            height: 2.5rem;
+            flex: 1;
+            letter-spacing: .2rem;
+            box-shadow: none;
+
+            &:hover {
+                background: $dark-green;
+                color: $white;
+            }
+        }
+    }
+
+}
+
+
+@media (min-width: 560px) {
+    .home {
+        .content {
+            .main_container {
+                .card_container {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+        }
+    }
+}
+
+
+
+@media (min-width: 768px) {
+    .home {
+        .img_container {
+            height: 500px;
+
+            .banner_img {
+                height: 500px;
+            }
+
+            .text_wrapper {
+                top: 0;
+                padding: 3rem 0 0 4rem;
+
+                .text_container {
+                    padding: 3rem;
+                    max-width: 630px;
+                    height: 400px;
+                    background-color: $dark-green-80 ;
+                    bottom: 4rem;
+                    right: 0;
+                    left: 6%;
+                    border-radius: 3px;
+
+
+                    h1 {
+                        font-size: $step-8;
+                    }
+
+                    p {
+                        margin-top: 1.5rem;
+                        font-size: $step-4;
+
+                    }
+                }
+            }
+
+        }
+
+        .content {
+            padding: 4rem 1rem;
+
+            .main_container {
+           
+
+                .main_title {
+                    font-size: $step-4;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    .home {
+        .content {
+            flex-direction: row;
+
+            .main_container {
+                .card_container {
+                    grid-template-columns: 1fr 1fr 1fr;
+                }
+            }
+
+            .aside {
+                padding-top: 5.6rem;
+                max-width: 300px;
+            }
+
+
+        }
+    }
+}
+
+
+@media (min-width: 1400px) {
+    .home {
+        .img_container {
+            .text_wrapper {
+                top: 0;
+                padding: 3rem 0;
+            }
+        }
+
+        .content {
+            padding: 4rem 0;
+                 .main_container {
+                .card_container {
+                    grid-template-columns: 1fr 1fr 1fr 1fr;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+:global(.no-hover) {
+    .home {
+        .content {
+            .aside {
+                .category_container {
+                    li {
+                        &:hover {
+                            background: transparent;
+                        }
+
+                        a:hover {
+
+                            color: inherit;
+                            transform: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        .subscribtion {
+            .form_container {
+                .subscribe_btn:hover {
+                    color: $dark-green;
+                    background: transparent;
+                }
+            }
+        }
+    }
+}

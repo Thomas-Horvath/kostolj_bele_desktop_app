@@ -1,0 +1,39 @@
+$step--2: clamp(0.7813rem, 0.7747rem + 0.0326vw, 0.8rem);
+$step--1: clamp(0.9375rem, 0.9158rem + 0.1087vw, 1rem);
+$step-0: clamp(1.125rem, 1.0815rem + 0.2174vw, 1.25rem);
+$step-1: clamp(1.35rem, 1.2761rem + 0.3696vw, 1.5625rem);
+$step-2: clamp(1.62rem, 1.5041rem + 0.5793vw, 1.9531rem);
+$step-3: clamp(1.944rem, 1.771rem + 0.8651vw, 2.4414rem);
+$step-4: clamp(2.3328rem, 2.0827rem + 1.2504vw, 3.0518rem);
+$step-5: clamp(2.7994rem, 2.4462rem + 1.7658vw, 3.8147rem);
+$step-6: clamp(3.3592rem, 2.8691rem + 2.4507vw, 4.7684rem);
+$step-7: clamp(4.0311rem, 3.36rem + 3.3555vw, 5.9605rem);
+$step-8: clamp(4.8373rem, 3.9283rem + 4.5448vw, 7.4506rem);
+
+
+$main-green: #4CAF50;
+$dark-green: #388E3C;
+// $orange: #f9aa34;
+$orange: #FF9800;
+// $orange: #f47500 ;
+$yellow: #FFEB3B;
+$white: #fff;
+$white-smoke: #dedede;
+$green: #62af6a;
+$bg: #f1f1f1;
+$text: #222;
+$font-lora: var(--font-lora);
+$font-dancing: var(--font-dancing);
+
+$box-shadow: 2px 2px 4px rgba(0, 0, 0,.3);
+$main-gold: #e8aa14;
+$color-gray: #817f75;
+$color-gray-60: rgba(190, 190, 190, 0.4);
+$dark-gray: #3a3a3a;
+$dark-gray-60: rgba(58, 58, 58, 0.6);
+$dark-green: #009541;
+$dark-green-80: rgba(0, 149, 65, .5);
+$tomato: tomato;
+
+
+$border-gray: #bdbbbb;

@@ -1,0 +1,222 @@
+@use "sass:color";
+@use "./variables" as *;
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.hero {
+    background:
+        linear-gradient(135deg, rgba(#fff, 0.94), rgba(#fff6e3, 0.92)),
+        linear-gradient(120deg, rgba($orange, 0.15), rgba($dark-green, 0.08));
+    border: 1px solid rgba($orange, 0.18);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
+    padding: 1.75rem;
+
+    h1 {
+        font-size: $step-4;
+        margin-bottom: 0.75rem;
+    }
+
+    p {
+        max-width: 60ch;
+        line-height: 1.8;
+        color: rgba($text, 0.8);
+    }
+}
+
+.content {
+    max-width: 1400px;
+    background: rgba(#fff, 0.88);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    border: 1px solid rgba($dark-green, 0.12);
+    padding: 1.25rem;
+}
+
+.form {
+    width: 100%;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.field_group {
+    display: grid;
+    gap: 1rem;
+
+    h2 {
+        font-size: $step-1;
+    }
+}
+
+.helper_text {
+    color: rgba($text, 0.72);
+    line-height: 1.7;
+    max-width: 68ch;
+}
+
+.plus_btn {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.row {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid rgba($border-gray, 0.65);
+    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(#fff, 0.96), rgba(#faf7f0, 0.96));
+}
+
+.item_card,
+.step_row,
+.media_row {
+    grid-template-columns: 1fr;
+}
+
+.full_width_input {
+    width: 100%;
+}
+
+.sub_row {
+    display: grid;
+    gap: 0.75rem;
+    
+}
+
+.sub_row_errors {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: -0.2rem;
+}
+
+.item_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h3 {
+        font-size: $step-0;
+    }
+}
+
+.step_row {
+    position: relative;
+}
+
+.form input,
+.form select,
+.form textarea,
+.file_input {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border-radius: 3px;
+    border: 1px solid rgba($border-gray, 0.9);
+    font-size: 1rem;
+    font-family: inherit;
+    background: rgba(#fff, 0.95);
+    resize: vertical;
+
+    &:focus {
+        outline: none;
+        border-color: $dark-green;
+        box-shadow: 0 0 0 3px rgba($dark-green, 0.12);
+    }
+}
+
+.field_error {
+    border-color: rgba($tomato, 0.85) !important;
+    box-shadow: 0 0 0 3px rgba($tomato, 0.12);
+
+    &:focus {
+        border-color: rgba($tomato, 0.95) !important;
+        box-shadow: 0 0 0 3px rgba($tomato, 0.16) !important;
+    }
+}
+
+.field_error_text {
+    margin-top: 0.1rem;
+    color: color.adjust($tomato, $lightness: -6%);
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.form_feedback_error {
+    border-radius: 3px;
+    padding: 1rem 1.1rem;
+    background: rgba($tomato, 0.12);
+    border: 1px solid rgba($tomato, 0.25);
+    color: color.adjust($tomato, $lightness: -8%);
+    line-height: 1.7;
+}
+
+.status_box {
+    border-radius: 3px;
+    padding: 1rem 1.1rem;
+    line-height: 1.7;
+}
+
+.status_error {
+    background: rgba($tomato, 0.12);
+    border: 1px solid rgba($tomato, 0.25);
+    color: color.adjust($tomato, $lightness: -8%);
+}
+
+.status_success {
+    background: rgba($dark-green, 0.12);
+    border: 1px solid rgba($dark-green, 0.25);
+    color: color.adjust($dark-green, $lightness: -6%);
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding-top: 2.5rem;
+    }
+
+    .content {
+        padding: 2rem;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .sub_row {
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 0.7fr) auto;
+        align-items: center;
+    }
+
+    .sub_row_errors {
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 0.7fr) auto;
+        align-items: start;
+    }
+
+    .step_row .sub_row {
+        grid-template-columns: minmax(220px, 0.45fr) auto;
+        align-items: center;
+        width: 100%;
+    }
+
+    .step_row .sub_row_errors {
+        grid-template-columns: minmax(220px, 0.45fr) auto;
+        align-items: start;
+        width: 100%;
+    }
+
+    .step_row textarea {
+        min-height: 10rem;
+    }
+
+    .step_row .btn {
+        justify-self: end;
+        margin: 0;
+    }
+}

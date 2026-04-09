@@ -1,0 +1,159 @@
+@use "./variables" as *;
+
+
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 1400px;
+    margin: 5rem auto;
+    padding: 1rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 300px;
+    width: 600px;
+    height: 500px;
+    border: 2px solid $dark-green;
+    border-radius: 3px;
+    background: rgba(52, 52, 52, 0.2);
+    backdrop-filter: blur(1px);
+
+    h1 {
+        margin-bottom: 1rem;
+    }
+
+    label {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    input {
+        padding: .5rem 1rem;
+        font-size: 1.2rem;
+        width: 90%;
+        margin-bottom: 0.35rem;
+        border: 2px solid transparent;
+
+        &:focus {
+            outline: none;
+            border: 2px solid $main-gold;
+        }
+    }
+
+    .password_field {
+        width: 90%;
+        position: relative;
+
+        input {
+            width: 100%;
+            margin-bottom: 0;
+            padding-right: 3.8rem;
+        }
+    }
+
+    .password_toggle {
+        position: absolute;
+        top: 50%;
+        right: 0.85rem;
+        transform: translateY(-50%);
+        width: 2.4rem;
+        height: 2.4rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        background: transparent;
+        color: $dark-green;
+        cursor: pointer;
+        transition: color 0.2s ease, opacity 0.2s ease;
+        z-index: 1;
+
+        svg {
+            width: 1.35rem;
+            height: 1.35rem;
+        }
+
+        &:hover {
+            color: $orange;
+        }
+    }
+
+    button {
+        margin: 0;
+    }
+
+    .hidden_error {
+        height: 2.2rem;
+        margin-bottom: 1rem;
+
+    }
+
+    .hidden_field_error {
+        width: 90%;
+        min-height: 1.5rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .field_error_text {
+        width: 90%;
+        min-height: 1.5rem;
+        margin-bottom: 0.85rem;
+        color: $tomato;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .field_error {
+        border: 2px solid $tomato !important;
+
+        &:focus {
+            border: 2px solid $tomato !important;
+            outline: none;
+        }
+    }
+
+    .error {
+        color: $tomato;
+        letter-spacing: .1rem;
+        font-size: 1rem;
+        font-weight: bold;
+        height: fit-content;
+        margin: 0 1rem 1rem;
+        background: $dark-gray-60;
+        padding: .5rem 1rem;
+        border-radius: 3px;
+        text-align: center;
+    }
+
+    .info_text {
+        width: 80%;
+        text-align: center;
+        line-height: 1.7;
+        margin-bottom: 1rem;
+    }
+
+}
+
+@media (min-width: 768px) {
+    .form {
+        input {
+            width: 70%;
+        }
+
+        .hidden_field_error,
+        .field_error_text {
+            width: 70%;
+        }
+
+        .password_field {
+            width: 70%;
+        }
+    }
+}
