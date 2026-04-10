@@ -6,10 +6,11 @@ import Image from 'next/image';
 import FavoriteButton from './FavoriteButton';
 import StaticStars from './StaticStars';
 import { useRate } from "../context/RateContext";
+import { getRecipeImageSrc } from "../../lib/recipeImageUrl";
 
 
 const RecipeCard = ({ recipe }) => {
-    const imageUrl = `/images/${recipe.imageURL}`;
+    const imageUrl = getRecipeImageSrc(recipe.imageURL);
     const { ratings } = useRate();
     const score = ratings[recipe.id] ?? recipe.rate;
 

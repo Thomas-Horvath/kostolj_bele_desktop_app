@@ -4,6 +4,7 @@ import { prisma } from '../../../../lib/prisma';
 import RateRecipe from "../../../components/RateRecipe";
 import { notFound } from "next/navigation";
 import { formatIngredientQuantity } from "../../../../lib/recipeOptions";
+import { getRecipeImageSrc } from "../../../../lib/recipeImageUrl";
 
 
 
@@ -61,7 +62,7 @@ const RecipeDetails = async ({ params }) => {
 
         <div className={style.image_card}>
           <Image
-            src={`/images/${recipe.imageURL}`}
+            src={getRecipeImageSrc(recipe.imageURL)}
             width={900}
             height={700}
             className={style.img}
