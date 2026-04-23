@@ -1,142 +1,201 @@
-# Kóstolj Bele!
+# Kóstolj Bele! Desktop App
 
-Receptgyűjtő alkalmazás Next.js 16, Prisma ORM 7 és NextAuth alapokon.
+Ez a projekt a már létező **Kóstolj Bele!** receptes weboldal desktop alkalmazássá alakított változata.
 
-A projekt célja egy rendezett, kereshető, vizuálisan igényes receptplatform, ahol a felhasználók saját recepteket hozhatnak létre, szerkeszthetnek, kedvenceket menthetnek és értékelhetnek.
+Az átalakítás célja, hogy az alkalmazás ne nyilvános weboldalként működjön, hanem privát, helyben futó Windows desktop appként. A személyes cél az, hogy a feleségem saját receptgyűjteményként, kényelmesen és webes publikálás nélkül tudja használni.
 
-## Fő funkciók
+## Röviden
 
-- recept létrehozása, szerkesztése és törlése
+- Next.js alapú React felület
+- Electron desktop alkalmazáskeret
+- Prisma ORM 7
+- SQLite adatbázis
+- saját desktop autentikáció
+- helyi receptképek kezelése
+- Next API route-ok nélkül, Electron IPC + service rétegen keresztül
+
+## Mit tud az app?
+
+- receptek létrehozása, szerkesztése és törlése
+- receptképek mentése, cseréje és törlése
 - kategória alapú böngészés
-- keresés név és kategória alapján
+- receptkeresés
 - kedvencek kezelése
 - receptértékelés
+- profil oldal
 - admin alapú felhasználókezelés
+- bejelentkezett felhasználó megjegyzése desktop sessionben
 
-## Jogosultsági működés
+## Miért desktop app?
 
-- A publikus regisztráció ki van vezetve.
-- Új felhasználót csak az admin tud létrehozni a profiloldalról.
-- Az alap admin felhasználó `Tamás`.
-- A seed három felhasználót hoz létre: `Tamás`, `Katinka`, `Test`.
-- Tamás szerepköre `ADMIN`, a többiek normál `USER` szerepkört kapnak.
+Az eredeti app weboldalként készült, de ennél a verziónál a cél már nem a publikus elérés vagy hosting.
+
+A desktop verzió előnyei:
+
+- privát használatra alkalmasabb
+- nem kell publikus szerver
+- az adatbázis és a képek helyben kezelhetők
+- egyszerűbb autentikáció elég
+- alkalmazásszerűbb felhasználói élmény adható
 
 ## Technológiai stack
 
-- Next.js 16.2
-- React 19
-- Prisma ORM 7
-- SQLite fejlesztői adatbázis
-- NextAuth hitelesítés
+- Next.js `15.5`
+- React `19`
+- Electron `41`
+- Prisma ORM `7`
+- SQLite
+- `better-sqlite3`
 - Sass moduláris stílusok
 
-## Verziókövetelmények
+## Architektúra
 
-- Node.js `20.9` vagy frissebb
-- npm `10+` ajánlott
+A projektben a régi Next backend API route-ok ki lettek vezetve.
 
-Ez különösen fontos WSL és DigitalOcean környezetben, mert a Next.js 16 és a Prisma 7 már modernebb Node futtatókörnyezetre épít.
+Az új desktop adatfolyam:
+
+```text
+React UI
+  -> lib/renderer/api kliens
+  -> Electron preload
+  -> Electron IPC
+  -> lib/services
+  -> Prisma
+  -> SQLite
+```
+
+Ez azt jelenti, hogy a React felület nem közvetlenül adatbázist hív, és már nem `/api/...` útvonalakon keresztül kommunikál. A backend jellegű feladatok az Electron main process és a service réteg mögé kerültek.
+
+## Fontos mappák
+
+- `app/`: Next.js App Router felület és React komponensek
+- `electron/`: Electron main process, preload, IPC csatornák és desktop állapot
+- `lib/services/`: üzleti logika, Prisma műveletek, recept/auth/profil/favorite/rating logika
+- `lib/renderer/api/`: renderer oldali kliensréteg, ami az Electron preloadon keresztül hív
+- `prisma/`: Prisma schema, migrációk és seed
+- `public/`: statikus assetek, logó és app ikon
+- `scripts/`: fejlesztői és teszt scriptek
+- `docs/`: Electron átállási dokumentáció
 
 ## Környezeti változók
 
-Másold le az `.env.example` fájlt `.env` néven, és töltsd ki a saját értékeiddel.
+Másold le az `.env.example` fájlt `.env` néven.
 
-Fejlesztői alapértékek:
+Fejlesztői SQLite példa:
 
 ```env
 DATABASE_URL="file:./dev.db"
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="csereld-egy-hosszu-veletlen-titokra"
 ```
 
-## Fejlesztői indítás
-
-1. Telepítsd a csomagokat:
+## Telepítés fejlesztéshez
 
 ```bash
 npm install
-```
-
-2. Futtasd a migrációkat:
-
-```bash
 npx prisma migrate dev
-```
-
-3. Seedeld az adatbázist:
-
-```bash
 npx prisma db seed
 ```
 
-4. Indítsd el a fejlesztői szervert:
+## Desktop fejlesztői indítás
 
 ```bash
-npm run dev
+npm run dev:desktop
 ```
 
-## Build WSL / Linux alatt
+Ez egyszerre indítja:
 
-A projekt úgy van előkészítve, hogy WSL-ben és Linuxos szerveren is jól buildelhető legyen.
+- a Next fejlesztői renderert `http://localhost:3001` címen
+- az Electron desktop shellt
 
-Ajánlott sorrend:
+## Tesztek és ellenőrzés
+
+Lint:
 
 ```bash
-npm install
-npx prisma generate
-npx prisma migrate deploy
-npx prisma db seed
 npm run lint
-npm run build
-npm run start
 ```
 
-## DigitalOcean / self-hosting megjegyzés
+Desktop smoke teszt:
 
-A `next.config.mjs` fájl `standalone` outputot használ, ami praktikus self-hostinghoz, mert a build után egy futtatásra készebb Next.js szervercsomag jön létre.
+```bash
+npm run test:desktop
+```
+
+A smoke teszt végigpróbálja a fő desktop backend folyamatokat:
+
+- login
+- recept létrehozás képpel
+- recept frissítés képcserével
+- recept törlés képtörléssel
+- kedvenc kapcsolás
+- rating mentés
+- profil adatok
+- admin user létrehozás
+
+## Natív SQLite modul megjegyzés
+
+Az Electron és a sima Node eltérő natív modul ABI-t használhat. Emiatt a `better-sqlite3` modult néha újra kell fordítani.
+
+Electron futtatáshoz:
+
+```bash
+npm run rebuild:electron
+```
+
+Sima Node futtatáshoz:
+
+```bash
+npm run rebuild:node
+```
+
+Ha `NODE_MODULE_VERSION` vagy `better_sqlite3.node` hibát látsz, általában ez a két parancs valamelyike a megoldás.
+
+## Build
+
+Webes build:
+
+```bash
+npm run build:web
+```
+
+Desktop build:
+
+```bash
+npm run build:desktop
+```
+
+A desktop build kimenete a `release/` mappába kerül.
 
 ## Seedelt belépési adatok
 
-- Felhasználónév: `Test` | Jelszó: `Password`
+Alap teszt belépés:
+
+```text
+Felhasználónév: Test
+Jelszó: Password
+```
+
+Admin felhasználó:
+
+```text
+Felhasználónév: Tamás
+Jelszó: Password
+```
 
 ## GitHub feltöltés előtt
 
-Ezeket ne töltsd fel a repóba:
+Ezeket ne töltsd fel:
 
 - `.env`
-- bármelyik helyi `.env.*`
-- `prisma/*.db`
-- `prisma/*.db-journal`
-- `.next`
+- `.env.*`
 - `node_modules`
+- `.next`
+- `release`
+- helyi SQLite adatbázisfájlok
 
 Ezeket a `.gitignore` már kezeli.
 
-## Prisma megjegyzés
+## Állapot
 
-A korábbi `package.json#prisma` beállítás helyett a projekt most már `prisma.config.ts` fájlt használ. Ez a Prisma 7 által támogatott konfigurációs forma.
+Az app jelenlegi állapota: desktop átállás alatt, de a fő Electron/service alapú folyamatok már működnek.
 
-A kliensgenerálás is frissült:
-
-- a schema `prisma-client` generátort használ
-- a generált kliens a `generated/prisma` mappába kerül
-- SQLite esetén a futó alkalmazás `@prisma/adapter-better-sqlite3` adapterrel csatlakozik
-
-Ez a felállás stabilabb Linuxos buildnél és jobban illeszkedik a Prisma 7 új működéséhez.
-
-## Frissítés utáni teendő
-
-Ha a projekt korábban Prisma 6 vagy régebbi Next.js verzióval futott, érdemes ezeket a parancsokat egymás után lefuttatni:
-
-```bash
-npm install
-npx prisma generate
-npx prisma migrate dev
-npx prisma db seed
-```
-
-Ha tiszta adatbázissal szeretnél indulni, akkor használhatod ezt is:
-
-```bash
-npx prisma migrate reset
-```
+Az `/app/api` mappa törölve lett, a fő backend logika már az Electron IPC és a `lib/services/*` réteg mögött van.

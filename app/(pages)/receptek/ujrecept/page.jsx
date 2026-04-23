@@ -1,16 +1,17 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import style from "../../../styles/newrecipe.module.scss"
 import { useRouter } from "next/navigation";
 import slugify from "../../../../utilities/slugify";
-import RecipeForm from "../../../components/RecipeForm";
+import RecipeForm from "../../../components/recipes/RecipeForm";
 import { useRate } from "../../../context/RateContext";
-import Spinner from "../../../components/Spinner";
+import Spinner from "../../../components/ui/Spinner";
+import { useDesktopAuth } from "../../../context/DesktopAuthContext";
+import recipesClient from "../../../../lib/renderer/api/recipesClient";
 
 
 const NewRecipe = () => {
-    const { status } = useSession();
+    const { status } = useDesktopAuth();
     const router = useRouter();
     const { refreshRecipes } = useRate();
     const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
@@ -22,45 +23,38 @@ const NewRecipe = () => {
         }
     }, [status, router]);
 
-    const handleSubmit = async ({ name, note, typeParamName, ingredients, steps, file }) => {
+    const handleSubmit = async ({ name, note, typeParamName, subtypeParamName, ingredients, steps, file }) => {
         try {
-            const formData = new FormData();
-            formData.append("name", name);
-            formData.append("note", note);
-            formData.append("slug", slugify(name));
-            formData.append("typeParamName", typeParamName);
-            formData.append("ingredients", JSON.stringify(ingredients));
-            formData.append("steps", JSON.stringify(steps));
-            if (file) {
-                formData.append("image", file);
-            }
-
-            const res = await fetch("/api/recipes", {
-                method: "POST",
-                body: formData,
+            // A RecipeForm csak osszegyujti az adatokat.
+            // A tenyleges mentes itt tortenik, mar a desktop recipes kliensen
+            // keresztul. A kepfajl is ezen az uton megy at az Electron fele.
+            await recipesClient.create({
+                name,
+                note,
+                slug: slugify(name),
+                typeParamName,
+                subtypeParamName,
+                ingredients,
+                steps,
+                file,
             });
 
-            if (res.ok) {
-                setStatusMessage({
-                    type: "success",
-                    text: "A recept sikeresen létrejött, átirányítás a receptek oldalára.",
-                });
-                refreshRecipes();
-                setTimeout(() => {
-                    router.push('/receptek');
-                }, 450);
-                return;
-            }
-
-            const data = await res.json();
             setStatusMessage({
-                type: "error",
-                text: data.error || "Nem sikerült elmenteni a receptet.",
+                type: "success",
+                text: "A recept sikeresen létrejött, átirányítás a receptek oldalára.",
             });
+            // A listat frissitjuk, hogy a memorias allapotban is azonnal
+            // megjelenhessen az uj recept, ne csak teljes oldalfrissites utan.
+            refreshRecipes();
+            setTimeout(() => {
+                router.push('/receptek');
+            }, 450);
         } catch (error) {
             setStatusMessage({
                 type: "error",
-                text: "A mentés közben hálózati vagy szerverhiba történt. Próbáld meg újra.",
+                text: error instanceof Error
+                    ? error.message
+                    : "A mentés közben hálózati vagy szerverhiba történt. Próbáld meg újra.",
             });
         }
     }

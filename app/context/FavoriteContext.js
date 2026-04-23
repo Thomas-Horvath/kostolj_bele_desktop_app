@@ -1,52 +1,32 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useDesktopAuth } from "./DesktopAuthContext";
+import favoritesClient from "../../lib/renderer/api/favoritesClient";
 
 const FavoritesContext = createContext();
 
 export function FavoriteProvider({ children }) {
-  const { data: session } = useSession();
+  const { user, status } = useDesktopAuth();
   const [favorites, setFavorites] = useState([]);
 
 
 
   useEffect(() => {
-    if (!session?.user?.id) {
+    if (status !== "authenticated" || !user?.id) {
       setFavorites([]);
       return;
     }
-    // Bejelentkezés után egyszer lehúzzuk a mentett kedvenceket,
-    // hogy a kártyák szív állapota azonnal a szerver szerinti értéket mutassa.
-    fetch("/api/favorites")
-      .then(async (res) => {
-        if (!res.ok) {
-          throw new Error("Nem sikerült lekérni a kedvenceket.");
-        }
-
-        const contentType = res.headers.get("content-type") || "";
-        if (!contentType.includes("application/json")) {
-          throw new Error("A szerver nem JSON választ adott a kedvencekhez.");
-        }
-
-        return res.json();
-      })
+    // Bejelentkezés után egyszer lehúzzuk a mentett kedvenceket.
+    // A React context már nem /api endpointot hív, hanem a desktop favorites klienst.
+    favoritesClient
+      .list()
       .then(data => setFavorites(Array.isArray(data) ? data : []))
       .catch(() => setFavorites([]));
-  }, [session]);
+  }, [status, user?.id]);
 
   const toggleFavorite = async (recipeId) => {
     try {
-      const res = await fetch("/api/favorites", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ recipeId }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Nem sikerült menteni a kedvenc állapotot.");
-      }
-
-      const data = await res.json();
+      const data = await favoritesClient.toggle(recipeId);
 
       if (data.favorited) {
         // Funkcionális state-frissítést használunk, hogy gyors kattintásoknál se

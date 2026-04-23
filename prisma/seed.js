@@ -5,6 +5,7 @@ import {
   CATEGORY_DEFINITIONS,
   normalizeSeedIngredient,
   resolveSeedCategory,
+  resolveSeedSubtype,
 } from "../lib/recipeOptions.js";
 
 // A package.json már ESM módot használ, ezért a seedet is import alapúvá tesszük.
@@ -19,16 +20,38 @@ async function main() {
   await prisma.step.deleteMany();
   await prisma.ingredient.deleteMany();
   await prisma.recipe.deleteMany();
+  await prisma.subtype.deleteMany();
   await prisma.type.deleteMany();
   await prisma.user.deleteMany();
 
   // A kategóriákat upserteljük, hogy többszöri seednél se duplázódjanak.
   for (const type of CATEGORY_DEFINITIONS) {
+    const { subtypes = [], ...typeData } = type;
+
     await prisma.type.upsert({
-      where: { paramName: type.paramName },
-      update: { name: type.name },
-      create: type,
+      where: { paramName: typeData.paramName },
+      update: { name: typeData.name },
+      create: typeData,
     });
+
+    for (const subtype of subtypes) {
+      await prisma.subtype.upsert({
+        where: { paramName: subtype.paramName },
+        update: {
+          name: subtype.name,
+          type: {
+            connect: { paramName: typeData.paramName },
+          },
+        },
+        create: {
+          name: subtype.name,
+          paramName: subtype.paramName,
+          type: {
+            connect: { paramName: typeData.paramName },
+          },
+        },
+      });
+    }
   }
 
   // A projekt kérésének megfelelően három fix userrel készül az alapállapot.
@@ -44,10 +67,10 @@ async function main() {
         role: "ADMIN",
       },
       {
-        name: "Katinka",
-        username: "Katinka",
+        name: "Károly",
+        username: "Károly",
         emailVerified: new Date(),
-        email: "kate@example.com",
+        email: "kar@example.com",
         password: await bcrypt.hash("Password", 10),
       },
       {
@@ -62,15 +85,16 @@ async function main() {
 
   const allUsers = await prisma.user.findMany();
   const tamas = allUsers.find((u) => u.username === "Tamás");
-  const katinka = allUsers.find((u) => u.username === "Katinka");
+  const karoly = allUsers.find((u) => u.username === "Károly");
   const testUser = allUsers.find((u) => u.username === "Test");
 
   // A minta recepteket váltakozva osztjuk ki a három felhasználó között.
-  const recipeAuthors = [tamas, katinka, testUser];
+  const recipeAuthors = [tamas, karoly, testUser];
   for (let i = 0; i < recipesData.length; i++) {
     const recipe = recipesData[i];
     const author = recipeAuthors[i % recipeAuthors.length];
     const categoryParamName = resolveSeedCategory(recipe);
+    const subtypeParamName = resolveSeedSubtype(recipe, categoryParamName);
 
     const createdRecipe = await prisma.recipe.create({
       data: {
@@ -85,6 +109,13 @@ async function main() {
         type: {
           connect: { paramName: categoryParamName },
         },
+        ...(subtypeParamName
+          ? {
+              subtype: {
+                connect: { paramName: subtypeParamName },
+              },
+            }
+          : {}),
         ingredients: {
           create: recipe.ingredients.map((ingredient) =>
             normalizeSeedIngredient(ingredient)

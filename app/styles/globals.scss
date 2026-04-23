@@ -63,6 +63,23 @@ a {
   background-attachment: fixed;
 }
 
+.app-shell {
+  // Ez az alkalmazas kulso vazszerkezete.
+  // A body-n van a fix header miatt szukseges felso padding, ezert itt a
+  // fennmarado viewport magassagot kell kitolteni.
+  min-height: calc(100vh - 4.4rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  // A tartalom kapja meg az osszes megmarado helyet.
+  // Ha keves a tartalom, ez a resz nyulik meg, es lent tartja a footert.
+  // Ha sok a tartalom, az oldal normalisan tovabb tud noni.
+  flex: 1 0 auto;
+  width: 100%;
+}
+
 
 
 

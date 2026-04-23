@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Kostolj Bele Desktop Shell</title>
+    <style>
+      /* Ez a fallback oldal csak arra szolgál, hogy a desktop shell akkor is
+         ertelmes allapotot mutasson, ha a renderer meg nincs bekotve vagy a
+         dev server nincs elinditva. */
+      :root {
+        color-scheme: light;
+        --bg: #f7f1e8;
+        --panel: #fffaf3;
+        --ink: #2d2118;
+        --accent: #ba5a1c;
+        --muted: #6d5b4d;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at top, #ffe2c7 0%, transparent 38%),
+          linear-gradient(180deg, var(--bg) 0%, #efe2d2 100%);
+        color: var(--ink);
+      }
+
+      main {
+        width: min(720px, calc(100vw - 40px));
+        padding: 32px;
+        border-radius: 24px;
+        background: var(--panel);
+        box-shadow: 0 24px 80px rgba(45, 33, 24, 0.14);
+      }
+
+      h1 {
+        margin-top: 0;
+      }
+
+      code {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #f0e2d3;
+      }
+
+      pre {
+        overflow: auto;
+        padding: 16px;
+        border-radius: 16px;
+        background: #2d2118;
+        color: #fff6ee;
+      }
+
+      p,
+      li {
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      strong {
+        color: var(--ink);
+      }
+
+      .accent {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Electron shell elindult, de a renderer meg nincs bekotve.</h1>
+      <p>
+        Ez normalis atmeneti allapot a migracio elejen. A desktop
+        infrastruktura mar fut, de a teljes app atirasa meg elottunk van.
+      </p>
+      <p>
+        Fejlesztes kozben ezt a shellt a <code>npm run dev:desktop</code>
+        paranccsal erdemes inditani.
+      </p>
+      <p>
+        Ha a Next renderer nem erheto el, az Electron ezt a tajekoztato oldalt
+        mutatja hiba helyett.
+      </p>
+      <pre>npm run dev:desktop</pre>
+      <ul>
+        <li><strong>main process:</strong> mar letre van hozva</li>
+        <li><strong>preload bridge:</strong> mar letre van hozva</li>
+        <li><strong>IPC csatornak:</strong> domainenkent scaffoldolva vannak</li>
+        <li><strong class="accent">kovetkezo lepes:</strong> service reteg es app atirasa</li>
+      </ul>
+    </main>
+  </body>
+</html>
+

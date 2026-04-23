@@ -3,12 +3,43 @@
   "version": "1.0.1",
   "private": true,
   "type": "module",
+  "main": "electron/main.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
+    "dev:web": "next dev -p 3001",
+    "dev:electron": "wait-on http://localhost:3001 && cross-env NODE_ENV=development ELECTRON_RENDERER_URL=http://localhost:3001 electronmon electron/main.js",
+    "dev:desktop": "concurrently -k \"npm run dev:web\" \"npm run dev:electron\"",
     "build": "prisma generate && next build",
+    "build:web": "prisma generate && next build",
+    "build:desktop": "npm run build:web && electron-builder",
+    "rebuild:electron": "electron-builder install-app-deps",
+    "rebuild:node": "npm rebuild better-sqlite3",
     "start": "next start",
+    "start:electron": "cross-env NODE_ENV=production electron electron/main.js",
+    "test:desktop": "cross-env NODE_ENV=test electron scripts/desktop-smoke-test.mjs",
     "lint": "eslint . --ext .js,.jsx,.mjs,.cjs,.ts,.tsx",
     "postinstall": "prisma generate"
+  },
+  "build": {
+    "appId": "hu.kostoljbele.desktop",
+    "productName": "Kostolj Bele",
+    "icon": "public/app-icon.png",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*",
+      "app/**/*",
+      "lib/**/*",
+      "public/**/*",
+      "generated/**/*",
+      "utilities/**/*",
+      ".next/**/*",
+      "package.json",
+      "next.config.mjs",
+      "prisma.config.ts",
+      "prisma/schema.prisma"
+    ]
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.2.0",
@@ -16,22 +47,29 @@
     "bcryptjs": "^3.0.2",
     "better-sqlite3": "^12.0.0",
     "clsx": "^2.1.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "dotenv": "^16.5.0",
-    "mongoose": "^8.7.2",
+    "electron": "^41.2.0",
+    "electron-builder": "^26.8.1",
+    "electron-store": "^11.0.2",
+    "electronmon": "^2.0.4",
     "next": "^15.5.0",
-    "next-auth": "5.0.0-beta.22",
     "prisma": "^7.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.3.0",
-    "sass": "^1.79.4"
+    "sass": "^1.79.4",
+    "sharp": "^0.34.5",
+    "wait-on": "^9.0.5",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/node": "24.2.0",
     "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "eslint": "^9.24.0",
     "eslint-config-next": "^15.5.0",
-    "@types/node": "24.2.0",
-    "@types/react-dom": "^19.2.0",
     "typescript": "5.9.2"
   }
 }

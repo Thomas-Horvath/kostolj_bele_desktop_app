@@ -1,8 +1,9 @@
-// components/Providers.jsx
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+import { DesktopAuthProvider } from "./DesktopAuthContext";
 
-export function Providers({ children, session }) {
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+export function Providers({ children }) {
+  // Ez mar nem webes SessionProvider, hanem a sajat desktop auth reteg.
+  // Innen kapja meg az egesz app az aktualis usert es a login/logout muveleteket.
+  return <DesktopAuthProvider>{children}</DesktopAuthProvider>;
 }

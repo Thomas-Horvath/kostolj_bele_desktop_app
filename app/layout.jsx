@@ -1,15 +1,12 @@
 
 import "./styles/globals.scss";
-import Header from "./components/Header";
+import Header from "./components/layout/Header";
 import localFont from "next/font/local";
-import Footer from "./components/Footer";
-import NoHoverTouch from "./components/NoHoverTouch";
-import CookiesAlert from "./components/CookiesAlert";
+import Footer from "./components/layout/Footer";
+import NoHoverTouch from "./components/ui/NoHoverTouch";
 import { Providers } from "./context/Providers";
 import { FavoriteProvider } from "./context/FavoriteContext";
-import SplashScreen from "./components/SplashScreen";
 import { RateProvider } from "./context/RateContext";
-// import Providers from "./context/authGuardContext";
 
 
 const dancingFont = localFont({
@@ -38,19 +35,25 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="hu" className={`${loraFont.variable} ${dancingFont.variable}`}>
       <body className="main">
-        <SplashScreen delay={150}>
+        {/* Desktop iranyban mar nem klasszikus weboldalkent gondolkodunk.
+            Emiatt a shell egyszerubb, alkalmazasszerubb szerkezetet kap. */}
           <Providers>
             <FavoriteProvider>
               <NoHoverTouch />
-              <Header />
-              <RateProvider>
-                {children}
-              </RateProvider>
-              <Footer />
-              <CookiesAlert />
+              <div className="app-shell">
+                <Header />
+                {/* A main tartalom rugalmasan kitolti a Header es Footer kozotti
+                    helyet. Igy rovid oldalakon, peldaul loginon, a Footer nem
+                    csuszik fel a tartalom ala, hanem az ablak legaljan marad. */}
+                <main className="app-content">
+                  <RateProvider>
+                    {children}
+                  </RateProvider>
+                </main>
+                <Footer />
+              </div>
             </FavoriteProvider>
           </Providers>
-        </SplashScreen>
       </body>
     </html>
   );

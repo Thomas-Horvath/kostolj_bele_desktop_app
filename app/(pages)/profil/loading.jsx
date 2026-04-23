@@ -1,5 +1,5 @@
 
-import Spinner from '../../components/Spinner'
+import Spinner from '../../components/ui/Spinner'
 
 const loading = () => {
   return (

@@ -1,15 +1,60 @@
 @use "./variables" as *;
 
+.sidebar_shell {
+    width: 100%;
+}
+
+.mobile_toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: .95rem 1rem;
+    border: 1px solid rgba($dark-green, 0.32);
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(#fff, 0.96), rgba(#f5efe4, 0.95));
+    color: $text;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
+}
+
+.mobile_toggle_icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: rgba($dark-green, 0.12);
+    color: $dark-green;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
 .aside {
     width: 100%;
+    margin-top: .75rem;
     background: linear-gradient(180deg, rgba(#fff, 0.9), rgba(#f7f2e8, 0.86));
     border: 1px solid rgba($border-gray, 0.55);
-    border-radius: 3px;
+    border-radius: 18px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+    display: none;
+
+    &.mobile_panel_open {
+        display: block;
+    }
 
     .category_container {
-        padding: .5rem .5rem 2rem .5rem;
-        border-radius: 3px;
+        padding: .5rem .75rem 1.25rem;
+        border-radius: 18px;
+
+        .section_heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
 
         h2 {
 
@@ -30,33 +75,152 @@
             }
         }
 
+        .category_list {
+            display: flex;
+            flex-direction: column;
+            gap: .55rem;
+        }
+
         li {
             border-bottom: 1px solid $border-gray;
 
+            list-style: none;
+        }
+
+        .top_level_item,
+        .category_item {
+            border: 1px solid rgba($border-gray, 0.8);
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(#fff, 0.58);
+        }
+
+        .category_row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: stretch;
+        }
+
+        .category_row_open {
+            border-bottom: 1px solid rgba($border-gray, 0.75);
+        }
+
+        .links {
+            padding: .9rem 1rem;
+            display: flex;
+            align-items: center;
+            min-height: 3.25rem;
+            width: 100%;
+             
+            transition: color .15s ease-in-out, transform .1s ease-in-out, background .15s ease-in-out;
+
             &:hover {
-                background: #88888850;
+                color: $dark-green;
+                background: rgba($dark-green, 0.05);
+                
+            }
+        }
+
+        .active_link {
+            background: linear-gradient(90deg, rgba($dark-green, 0.14), rgba($dark-green, 0.03));
+            color: $dark-green;
+            font-weight: 700;
+        }
+
+        .category_toggle {
+            min-width: 3.5rem;
+            appearance: none;
+            -webkit-appearance: none;
+            border-left: 1px solid rgba($border-gray, 0.75);
+            border-bottom: 0;
+            border-top: 0;
+            border-right: 0;
+            background: linear-gradient(180deg, rgba(#fff, 0.9), rgba(#f6f0e6, 0.92));
+            color: $dark-green;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none;
+            outline: none;
+            transition: background .15s ease-in-out, transform .12s ease-in-out;
+
+            &:hover {
+                background: rgba($dark-green, 0.08);
             }
 
-            a {
-                padding: .5rem;
-                display: flex;
-                height: 100%;
-                width: 100%;
-                transition: transform .1s ease-in-out;
-
-                &:hover {
-                    color: $dark-green;
-                    transform: translateX(10px);
-                }
+            &:focus,
+            &:focus-visible,
+            &:active {
+                outline: none;
+                box-shadow: none;
             }
+        }
+
+        .chevron {
+            width: .7rem;
+            height: .7rem;
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            transform: rotate(45deg) translateY(-1px);
+            transition: transform .18s ease-in-out;
+            transform-origin: center;
+        }
+
+        .chevron_open {
+            transform: rotate(225deg) translateY(-1px);
+        }
+
+        .subcategory_list {
+            padding: .25rem .45rem .6rem;
+            display: flex;
+            flex-direction: column;
+            gap: .25rem;
+        }
+
+        .subcategory_item {
+            border-bottom: 0;
+        }
+
+        .subcategory_link {
+            display: block;
+            padding: .7rem .85rem;
+            color: rgba($text, 0.82);
+            font-size: $step--1;
+            border-radius: 10px;
+            transition: color .15s ease-in-out, transform .1s ease-in-out, background .15s ease-in-out;
+
+            &:hover {
+                color: $dark-green;
+                background: rgba($dark-green, 0.06);
+                transform: translateX(6px);
+            }
+        }
+
+        .active_sublink {
+            background: rgba($dark-green, 0.12);
+            color: $dark-green;
+            font-weight: 700;
         }
     }
 
+    .mobile_close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 999px;
+        background: rgba($dark-green, 0.12);
+        color: $dark-green;
+        font-size: 1.5rem;
+        line-height: 1;
+    }
+
     .about_container {
-        margin: 1rem 0;
-        padding: .5rem .5rem 2rem .5rem;
+        margin: 0;
+        padding: .5rem .75rem 1.5rem;
    
-        border-radius: 3px;
+        border-radius: 18px;
 
         h2 {
 
@@ -103,9 +267,7 @@
         }
 
         & button {
-            margin-left: auto;
-            margin-right: 0;
-            width: 150px;
+            width: 100%;
         }
     }
 }
@@ -114,6 +276,28 @@
     .aside {
         width: 100%;
         height: auto;
+        display: block;
+        margin-top: 0;
+
+        .mobile_close {
+            display: none;
+        }
     }
 
+    .mobile_toggle,
+    .mobile_close {
+        display: none;
+    }
+}
+
+@media (min-width: 992px) {
+    .aside {
+        .about_container {
+            & button {
+                width: 150px;
+                margin-left: auto;
+                margin-right: 0;
+            }
+        }
+    }
 }

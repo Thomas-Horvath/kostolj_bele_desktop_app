@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import DeleteRecipeButton from "../../components/DeleteRecepiButton";
+import DeleteRecipeButton from "../../components/recipes/DeleteRecepiButton";
 import styles from "../../styles/profil.module.scss";
-import Spinner from "../../components/Spinner";
+import Spinner from "../../components/ui/Spinner";
+import { useDesktopAuth } from "../../context/DesktopAuthContext";
+import profileClient from "../../../lib/renderer/api/profileClient";
 
 const initialUserForm = {
   name: "",
@@ -17,7 +18,7 @@ const initialUserForm = {
 };
 
 export default function ProfilPage() {
-  const { data: session, status } = useSession();
+  const { user, status } = useDesktopAuth();
   const router = useRouter();
 
   const [recipes, setRecipes] = useState([]);
@@ -79,10 +80,10 @@ export default function ProfilPage() {
     }
   }, [status, router]);
 
-  // A profil minden tartalmát egyetlen API-ról kérjük le,
-  // így a saját receptek, kedvencek és admin adatok egyszerre frissülnek.
+  // A profil minden tartalmát egyetlen desktop klienshívással kérjük le.
+  // A React oldal nem ismeri az IPC vagy Prisma részleteit, csak a profileClientet.
   async function fetchProfileData() {
-    if (!session?.user?.id) {
+    if (!user?.id) {
       setLoading(false);
       return;
     }
@@ -91,12 +92,7 @@ export default function ProfilPage() {
     setPageError("");
 
     try {
-      const res = await fetch("/api/profile", { cache: "no-store" });
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Nem sikerült lekérni a profil adatokat.");
-      }
+      const data = await profileClient.get();
 
       setRecipes(data.ownRecipes || []);
       setFavorites(data.favoriteRecipes || []);
@@ -115,7 +111,7 @@ export default function ProfilPage() {
     // Itt tudatosan a session változására reagálunk, nem a lokális függvényreferenciára.
     // Ha a függvényt dependencyként figyelnénk, minden renderrel újrafutna a lekérés.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+  }, [user?.id]);
 
   async function handleCreateUser(e) {
     e.preventDefault();
@@ -136,17 +132,7 @@ export default function ProfilPage() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userForm),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Nem sikerült létrehozni a felhasználót.");
-      }
+      const data = await profileClient.createUser(userForm);
 
       // Siker után kiürítjük a formot és újrahúzzuk az admin listát,
       // hogy a friss user azonnal látszódjon is a profilban.
@@ -190,7 +176,7 @@ export default function ProfilPage() {
       <div className={styles.hero}>
         <div>
           <p className={styles.eyebrow}>Profil központ</p>
-          <h1>Szia, {session?.user?.username}!</h1>
+          <h1>Szia, {user?.username}!</h1>
           <p className={styles.lead}>
             Itt éred el a saját receptjeidet, a kedvenceidet, és adminként az
             új felhasználók létrehozását is.

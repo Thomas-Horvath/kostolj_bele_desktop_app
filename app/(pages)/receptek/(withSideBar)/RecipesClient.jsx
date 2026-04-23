@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import styles from "../../../styles/recipes.module.scss";
-import RecipeCard from "../../../components/RecipeCard";
-import RecipeCardSkeleton from "../../../components/RecipeCardSkeleton";
+import RecipeCard from "../../../components/recipes/RecipeCard";
+import RecipeCardSkeleton from "../../../components/recipes/RecipeCardSkeleton";
+import recipesClient from "../../../../lib/renderer/api/recipesClient";
 
 export default function RecipesClient({ initialQuery = "" }) {
   const searchParams = useSearchParams();
@@ -20,23 +21,8 @@ export default function RecipesClient({ initialQuery = "" }) {
   useEffect(() => {
     setLoading(true);
 
-    const apiUrl = query
-      ? `/api/recipes?q=${encodeURIComponent(query)}`
-      : "/api/recipes";
-
-    fetch(apiUrl, { cache: "no-store" })
-      .then(async (res) => {
-        if (!res.ok) {
-          throw new Error("Nem sikerült lekérni a recepteket.");
-        }
-
-        const contentType = res.headers.get("content-type") || "";
-        if (!contentType.includes("application/json")) {
-          throw new Error("A szerver nem JSON választ adott a receptekhez.");
-        }
-
-        return res.json();
-      })
+    recipesClient
+      .list(query)
       .then(data => setRecipes(Array.isArray(data) ? data : []))
       .catch((err) => {
         console.error(err);
@@ -54,7 +40,7 @@ export default function RecipesClient({ initialQuery = "" }) {
           </h1>
           {query ? (
             <p className={styles.result_summary}>
-              {recipes.length} találat név vagy kategória alapján
+              {recipes.length} találat név, kategória vagy alkategória alapján
             </p>
           ) : null}
         </div>
@@ -68,8 +54,8 @@ export default function RecipesClient({ initialQuery = "" }) {
           <div className={styles.empty_state}>
             <h2>Nincs találat</h2>
             <p>
-              Próbálj meg más receptnevet vagy kategóriát keresni, például:
-              húsételek, desszertek, levesek.
+              Próbálj meg más receptnevet, kategóriát vagy alkategóriát keresni,
+              például: húsételek, csirke, desszertek, krémlevesek.
             </p>
           </div>
         ) : null}

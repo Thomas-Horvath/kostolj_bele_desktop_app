@@ -1,14 +1,15 @@
 'use client';
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
-import RecipeForm from "../../../../components/RecipeForm";
+import RecipeForm from "../../../../components/recipes/RecipeForm";
 import slugify from "../../../../../utilities/slugify";
 import style from "../../../../styles/newrecipe.module.scss";
-import Spinner from "../../../../components/Spinner";
+import Spinner from "../../../../components/ui/Spinner";
+import { useDesktopAuth } from "../../../../context/DesktopAuthContext";
+import recipesClient from "../../../../../lib/renderer/api/recipesClient";
 
 export default function EditRecipePage() {
-    const { status } = useSession();
+    const { status } = useDesktopAuth();
     const router = useRouter();
     const params = useParams();
     const slug = typeof params?.slug === "string" ? params.slug : "";
@@ -27,13 +28,9 @@ export default function EditRecipePage() {
         async function loadRecipe() {
             try {
                 setLoading(true);
-                const res = await fetch(`/api/editrecipes/${slug}`, { method: "GET" });
-                const data = await res.json();
-
-                if (!res.ok) {
-                    throw new Error(data.error || "Nem sikerült betölteni a receptet.");
-                }
-
+                // A szerkesztő kezdőadata most már a recipes kliensen keresztül érkezik,
+                // így a GET betöltés nem a régi route fetch logikára támaszkodik.
+                const data = await recipesClient.getEditableBySlug(slug);
                 setInitialData(data);
             } catch (err) {
                 setPageError(err.message);
@@ -48,44 +45,36 @@ export default function EditRecipePage() {
     }, [router, slug, status]);
 
 
-    const handleSubmit = async ({ name, note, typeParamName, ingredients, steps, file }) => {
+    const handleSubmit = async ({ name, note, typeParamName, subtypeParamName, ingredients, steps, file }) => {
         try {
-            const formData = new FormData();
-            formData.append("name", name);
-            formData.append("note", note);
-            formData.append("slug", slugify(name));
-            formData.append("typeParamName", typeParamName);
-            formData.append("ingredients", JSON.stringify(ingredients));
-            formData.append("steps", JSON.stringify(steps));
-            if (file) {
-                formData.append("image", file);
-            }
-
-            const res = await fetch(`/api/recipes/${initialData.id}`, {
-                method: "PUT",
-                body: formData,
+            // A modositasi payload ugyanazon a desktop recipes kliensen megy at,
+            // mint a letrehozas. Ha uj kep is jon, azt a backend cserekkent kezeli:
+            // uj kep mentese + regi kep torlese.
+            await recipesClient.update({
+                id: initialData.id,
+                name,
+                note,
+                slug: slugify(name),
+                typeParamName,
+                subtypeParamName,
+                ingredients,
+                steps,
+                file,
             });
 
-            if (res.ok) {
-                setStatusMessage({
-                    type: "success",
-                    text: "A recept módosítása sikerült, átirányítás a receptek oldalára.",
-                });
-                setTimeout(() => {
-                    router.push('/receptek');
-                }, 450)
-                return;
-            }
-
-            const data = await res.json();
             setStatusMessage({
-                type: "error",
-                text: data.error || "Nem sikerült módosítani a receptet.",
+                type: "success",
+                text: "A recept módosítása sikerült, átirányítás a receptek oldalára.",
             });
+            setTimeout(() => {
+                router.push('/receptek');
+            }, 450)
         } catch (error) {
             setStatusMessage({
                 type: "error",
-                text: "A mentés közben hálózati vagy szerverhiba történt. Próbáld meg újra.",
+                text: error instanceof Error
+                    ? error.message
+                    : "A mentés közben hálózati vagy szerverhiba történt. Próbáld meg újra.",
             });
         }
     }

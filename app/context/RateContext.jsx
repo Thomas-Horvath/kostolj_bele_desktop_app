@@ -1,6 +1,7 @@
 // context/RateContext.jsx
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
+import recipesClient from "../../lib/renderer/api/recipesClient";
 
 const RateContext = createContext();
 
@@ -23,11 +24,7 @@ export function RateProvider({ children }) {
 
   async function fetchRecipes() {
     try {
-      const res = await fetch("/api/recipes");
-      if (!res.ok) {
-        throw new Error("Nem sikerült lekérni a recepteket.");
-      }
-      const data = await res.json();
+      const data = await recipesClient.list();
       setTopEightRecipes(topRecipes(data));
     } catch (err) {
       console.error("Nem sikerült lekérni a recepteket", err);
@@ -48,7 +45,7 @@ export function RateProvider({ children }) {
   /**
    * Ha a useEffectben ratings-et figyeled, akkor minden szavazásnál újra kellene tölteni az összes 
    * receptet → ez lassú lenne, és sok felesleges adatmozgás.
-   * Ha külön útvonal van (/api/recipes/[id]), akkor csak azt az egy receptet kérjük 
+   * Desktop módban a recipesClient IPC-n keresztül csak azt az egy receptet kéri
    * le újra, amelyik változott → gyorsabb, tisztább, kevesebb adat.
    */
 
@@ -57,16 +54,13 @@ export function RateProvider({ children }) {
   const updateRating = async (recipeId, newScore) => {
     try {
       // csak az adott receptet kérjük le friss értékkel
-      const res = await fetch(`/api/recipes/${recipeId}`);
-      if (res.ok) {
-        const updated = await res.json();
-        setTopEightRecipes(prev =>
-          topRecipes([
-            ...prev.filter(r => r.id !== recipeId),
-            updated
-          ])
-        );
-      }
+      const updated = await recipesClient.getById(recipeId);
+      setTopEightRecipes(prev =>
+        topRecipes([
+          ...prev.filter(r => r.id !== recipeId),
+          updated
+        ])
+      );
       // opcionálisan: elmentheted külön is
       setRatings((prev) => ({ ...prev, [recipeId]: newScore }));
     } catch (err) {

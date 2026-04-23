@@ -1,7 +1,7 @@
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic"; // ne próbálja SSG-zni
 
-import SideBar from "../../../components/SideBar";
+import SideBar from "../../../components/layout/SideBar";
 import styles from "../../../styles/recipeLayout.module.scss";
 
 export default function RecipeLayout({ children }) {

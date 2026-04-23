@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from './styles/home.module.scss';
-import HomeRecipesContainer from './components/HomeRecipesContainer';
+import HomeRecipesContainer from './components/recipes/HomeRecipesContainer';
 
 
 export default async function Home() {
@@ -38,7 +38,7 @@ export default async function Home() {
       </div>
 
 
-      <div className={styles.subscribtion}>
+      {/* <div className={styles.subscribtion}>
 
         <h3>Iratkozz fel hírlevelünkre!</h3>
         <h4>
@@ -65,7 +65,7 @@ export default async function Home() {
         </div>
 
 
-      </div>
+      </div> */}
 
     </div>
   );

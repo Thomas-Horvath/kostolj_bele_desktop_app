@@ -1,5 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   // A seed és a sima Node-alapú scriptek miatt itt a JS-alapú kliensgenerátort használjuk.
@@ -12,6 +10,12 @@ datasource db {
 }
 
 model User {
+  // A desktop authhoz ez a tabla mar jo alap:
+  // - a username alapjan azonosithatunk
+  // - a password mezoben hash-elt jelszo tarolhato
+  // - a role mezovel egyszeruen kezelheto az admin jog
+  //
+  // Emiatt a next-auth kivezetesehez nem kell kulon auth schema vagy uj tabla.
   id            String   @id @default(cuid())
   name          String?
   username      String   @unique
@@ -39,6 +43,9 @@ model Recipe {
   typeId Int
   type   Type @relation(fields: [typeId], references: [id], onDelete: Cascade)
 
+  subtypeId Int?
+  subtype   Subtype? @relation(fields: [subtypeId], references: [id], onDelete: SetNull)
+
   authorId    String
   author      User       @relation("UserRecipes", fields: [authorId], references: [id], onDelete: Cascade)
   favoritedBy Favorite[]
@@ -50,6 +57,18 @@ model Type {
   name      String   @unique
   paramName String   @unique
   recipes   Recipe[]
+  subtypes  Subtype[]
+}
+
+model Subtype {
+  id        Int      @id @default(autoincrement())
+  name      String
+  paramName String   @unique
+  typeId    Int
+  type      Type     @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  recipes   Recipe[]
+
+  @@unique([typeId, name])
 }
 
 model Ingredient {

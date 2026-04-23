@@ -1,16 +1,17 @@
 "use client";
 
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import style from "../../styles/login.module.scss";
+import { useDesktopAuth } from "../../context/DesktopAuthContext";
 
 
 export default function SignIn() {
   const [userInfo, setUserInfo] = useState({ username: "", password: "" });
   const router = useRouter();
+  const { login, isAuthenticated, status, runtimeError } = useDesktopAuth();
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({ username: "", password: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,6 +21,12 @@ export default function SignIn() {
     setFieldErrors((prev) => ({ ...prev, [fieldName]: "" }));
   }
 
+  useEffect(() => {
+    if (status === "authenticated" && isAuthenticated) {
+      router.replace("/profil");
+    }
+  }, [isAuthenticated, router, status]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -27,43 +34,26 @@ export default function SignIn() {
     setIsSubmitting(true);
 
     try {
-      const validationResponse = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userInfo),
-      });
+      // A login mar nem ketlepcsos /api/login + next-auth folyamat,
+      // hanem egyetlen desktop auth hivas az Electron main process fele.
+      const result = await login(userInfo);
 
-      const validationData = await validationResponse.json();
-
-      if (!validationResponse.ok) {
-        if (validationData.field) {
+      if (!result?.ok) {
+        if (result?.field) {
           setFieldErrors((prev) => ({
             ...prev,
-            [validationData.field]: validationData.message,
+            [result.field]: result.message,
           }));
         } else {
-          setError(validationData.message || "Nem sikerült bejelentkezni.");
+          setError(result?.message || "Nem sikerult bejelentkezni.");
         }
         return;
       }
 
-      const res = await signIn("credentials", {
-        redirect: false,
-        username: userInfo.username,
-        password: userInfo.password,
-      });
-
-      if (res?.ok && !res?.error) {
-        // A bejelentkezés után ráfrissítünk a kliens oldali auth állapotra is,
-        // így a fejléc és a védett oldalak azonnal ugyanazt a sessiont látják.
-        router.refresh();
-        router.push("/profil");
-        return;
-      }
-
-      setError("Nem sikerült bejelentkezni. Kérlek próbáld újra.");
+      router.refresh();
+      router.push("/profil");
     } catch {
-      setError("Váratlan hiba történt a bejelentkezés során.");
+      setError("Varatlan hiba tortent a bejelentkezes soran.");
     } finally {
       setIsSubmitting(false);
     }
@@ -115,9 +105,11 @@ export default function SignIn() {
           {fieldErrors.password || ""}
         </p>
 
-        <p className={error ? style.error : style.hidden_error}> {error ? error : ""}</p>
+        <p className={error ? style.error : style.hidden_error}>
+          {error || runtimeError || ""}
+        </p>
         <button type="submit" className="btn-orange" disabled={isSubmitting}>
-          {isSubmitting ? "Belépés..." : "Bejelentkezés"}
+          {isSubmitting ? "Belepes..." : "Bejelentkezes"}
         </button>
       </form>
     </div>
