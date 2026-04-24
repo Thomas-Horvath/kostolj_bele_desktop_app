@@ -3,6 +3,7 @@ generator client {
   // A seed és a sima Node-alapú scriptek miatt itt a JS-alapú kliensgenerátort használjuk.
   // Ezt a Next és a Prisma CLI is stabilan ugyanúgy tudja importálni.
   provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 datasource db {

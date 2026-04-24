@@ -1,24 +1,26 @@
 {
   "name": "kostolj_bele",
   "version": "1.0.1",
+  "description": "A Kóstolj Bele receptes weboldal privát Windows desktop appá alakított változata.",
+  "author": "Thomas Horvath",
   "private": true,
   "type": "module",
   "main": "electron/main.js",
   "scripts": {
-    "dev": "next dev -p 3001",
-    "dev:web": "next dev -p 3001",
-    "dev:electron": "wait-on http://localhost:3001 && cross-env NODE_ENV=development ELECTRON_RENDERER_URL=http://localhost:3001 electronmon electron/main.js",
+    "dev": "next dev -p 3010",
+    "dev:web": "next dev -p 3010",
+    "dev:electron": "wait-on http://localhost:3010 && cross-env NODE_ENV=development ELECTRON_RENDERER_URL=http://localhost:3010 electronmon electron/main.js",
     "dev:desktop": "concurrently -k \"npm run dev:web\" \"npm run dev:electron\"",
-    "build": "prisma generate && next build",
-    "build:web": "prisma generate && next build",
+    "build": "prisma generate && node scripts/patch-prisma-client.mjs && next build && node scripts/prepare-standalone-assets.mjs",
+    "build:web": "prisma generate && node scripts/patch-prisma-client.mjs && next build && node scripts/prepare-standalone-assets.mjs",
     "build:desktop": "npm run build:web && electron-builder",
     "rebuild:electron": "electron-builder install-app-deps",
     "rebuild:node": "npm rebuild better-sqlite3",
     "start": "next start",
     "start:electron": "cross-env NODE_ENV=production electron electron/main.js",
     "test:desktop": "cross-env NODE_ENV=test electron scripts/desktop-smoke-test.mjs",
-    "lint": "eslint . --ext .js,.jsx,.mjs,.cjs,.ts,.tsx",
-    "postinstall": "prisma generate"
+    "lint": "eslint . --ext .js,.jsx,.mjs,.cjs,.ts,.tsx --ignore-pattern tmp/**",
+    "postinstall": "prisma generate && node scripts/patch-prisma-client.mjs"
   },
   "build": {
     "appId": "hu.kostoljbele.desktop",
@@ -32,13 +34,21 @@
       "app/**/*",
       "lib/**/*",
       "public/**/*",
+      "uploads/**/*",
       "generated/**/*",
+      "node_modules/.prisma/**/*",
       "utilities/**/*",
       ".next/**/*",
       "package.json",
       "next.config.mjs",
       "prisma.config.ts",
-      "prisma/schema.prisma"
+      "prisma/schema.prisma",
+      "prisma/dev.db"
+    ],
+    "asarUnpack": [
+      ".next/**/*",
+      "node_modules/better-sqlite3/**/*",
+      "prisma/**/*"
     ]
   },
   "dependencies": {
@@ -50,10 +60,7 @@
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "dotenv": "^16.5.0",
-    "electron": "^41.2.0",
-    "electron-builder": "^26.8.1",
     "electron-store": "^11.0.2",
-    "electronmon": "^2.0.4",
     "next": "^15.5.0",
     "prisma": "^7.2.0",
     "react": "^19.2.0",
@@ -68,6 +75,9 @@
     "@types/node": "24.2.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "electron": "^41.2.0",
+    "electron-builder": "^26.8.1",
+    "electronmon": "^2.0.4",
     "eslint": "^9.24.0",
     "eslint-config-next": "^15.5.0",
     "typescript": "5.9.2"

@@ -13,4 +13,4 @@ export const DESKTOP_IMAGE_PROTOCOL = "kb-image";
 // Fejlesztes kozben egyelore a mar meglevo Next dev server adja a renderert.
 // Ez csak atmeneti integracios lepes: a vegso cel az, hogy a renderer ne
 // fuggjon a Next server backendes kepessegeitol.
-export const DEFAULT_DEV_SERVER_URL = "http://localhost:3001";
+export const DEFAULT_DEV_SERVER_URL = "http://localhost:3010";

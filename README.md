@@ -181,18 +181,7 @@ Felhasználónév: Tamás
 Jelszó: Password
 ```
 
-## GitHub feltöltés előtt
 
-Ezeket ne töltsd fel:
-
-- `.env`
-- `.env.*`
-- `node_modules`
-- `.next`
-- `release`
-- helyi SQLite adatbázisfájlok
-
-Ezeket a `.gitignore` már kezeli.
 
 ## Állapot
 
