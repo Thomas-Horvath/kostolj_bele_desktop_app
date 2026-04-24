@@ -8,6 +8,7 @@ import {
   INGREDIENT_SUGGESTIONS,
   MEASUREMENT_UNITS,
   canonicalizeMeasurementUnit,
+  getCategorySubtypes,
 } from "../../../lib/recipeOptions";
 import {
   MAX_RECIPE_IMAGE_SIZE_BYTES,
@@ -23,6 +24,7 @@ export default function RecipeForm({
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
   const [typeParamName, setTypeParamName] = useState("");
+  const [subtypeParamName, setSubtypeParamName] = useState("");
   const [formError, setFormError] = useState("");
   const [ingredients, setIngredients] = useState([
     {
@@ -55,6 +57,8 @@ export default function RecipeForm({
     });
   }
 
+  const availableSubtypes = getCategorySubtypes(typeParamName);
+
   // Itt szandekosan a sajat magyar validacionkat hasznaljuk, hogy a felhasznalo
   // kozvetlenul az erintett mezo alatt kapjon ertheto hiba-visszajelzest.
   function validateForm(file) {
@@ -66,6 +70,10 @@ export default function RecipeForm({
 
     if (!typeParamName) {
       nextErrors.typeParamName = "A kategoria kivalasztasa kotelezo.";
+    }
+
+    if (availableSubtypes.length > 0 && !subtypeParamName) {
+      nextErrors.subtypeParamName = "Az alkategoria kivalasztasa kotelezo.";
     }
 
     ingredients.forEach((ingredient, index) => {
@@ -118,6 +126,7 @@ export default function RecipeForm({
       setName(initialData.name || "");
       setNote(initialData.note || "");
       setTypeParamName(initialData.type?.paramName || "");
+      setSubtypeParamName(initialData.subtype?.paramName || "");
 
       if (Array.isArray(initialData.ingredients) && initialData.ingredients.length) {
         setIngredients(
@@ -144,6 +153,26 @@ export default function RecipeForm({
     }
   }, [initialData]);
 
+  useEffect(() => {
+    // Ha kategoriat valtunk, akkor csak olyan alkategoriat tarthatunk meg,
+    // ami tenyleg az uj kategoriaba tartozik. Ellenkezo esetben a menteskor
+    // ervenytelen paros menne a service reteg fele.
+    if (!availableSubtypes.length) {
+      if (subtypeParamName) {
+        setSubtypeParamName("");
+      }
+      return;
+    }
+
+    const hasActiveSubtype = availableSubtypes.some(
+      (subtype) => subtype.paramName === subtypeParamName
+    );
+
+    if (!hasActiveSubtype) {
+      setSubtypeParamName("");
+    }
+  }, [availableSubtypes, subtypeParamName]);
+
   async function handleSubmit(e) {
     e.preventDefault();
     setFormError("");
@@ -157,7 +186,15 @@ export default function RecipeForm({
 
     // Maga az API vagy IPC hivas nem itt tortenik. Ez a komponens csak
     // begyujti es ellenorzi az adatokat, a tenyleges mentest a kulso oldal intezi.
-    await onSubmit({ name, note, typeParamName, ingredients, steps, file });
+    await onSubmit({
+      name,
+      note,
+      typeParamName,
+      subtypeParamName,
+      ingredients,
+      steps,
+      file,
+    });
   }
 
   return (
@@ -241,6 +278,43 @@ export default function RecipeForm({
           </p>
         ) : null}
       </div>
+
+      {availableSubtypes.length > 0 ? (
+        <div className={style.field_group}>
+          <h2>Alkategoria</h2>
+          <p className={style.helper_text}>
+            A valasztott kategoriaban jelold ki a legpontosabb alkategoriat is,
+            mert a menteshez ez kotelezo.
+          </p>
+          <select
+            value={subtypeParamName}
+            name="subtype"
+            className={clsx({
+              [style.field_error]: Boolean(getFieldError("subtypeParamName")),
+            })}
+            onChange={(e) => {
+              setSubtypeParamName(e.target.value);
+              if (e.target.value) {
+                clearSingleFieldError("subtypeParamName");
+              }
+            }}
+          >
+            <option value="" disabled>
+              Alkategoria
+            </option>
+            {availableSubtypes.map((subtype) => (
+              <option key={subtype.paramName} value={subtype.paramName}>
+                {subtype.name}
+              </option>
+            ))}
+          </select>
+          {getFieldError("subtypeParamName") ? (
+            <p className={style.field_error_text}>
+              {getFieldError("subtypeParamName")}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className={style.field_group}>
         <h2>Hozzavalok</h2>
