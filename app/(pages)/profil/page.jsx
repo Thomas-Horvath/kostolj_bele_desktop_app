@@ -8,6 +8,7 @@ import DeleteRecipeButton from "../../components/recipes/DeleteRecepiButton";
 import styles from "../../styles/profil.module.scss";
 import Spinner from "../../components/ui/Spinner";
 import { useDesktopAuth } from "../../context/DesktopAuthContext";
+import backupClient from "../../../lib/renderer/api/backupClient";
 import profileClient from "../../../lib/renderer/api/profileClient";
 
 const initialUserForm = {
@@ -30,6 +31,10 @@ export default function ProfilPage() {
   const [pageError, setPageError] = useState("");
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
+  const [backupError, setBackupError] = useState("");
+  const [backupSuccess, setBackupSuccess] = useState("");
+  const [isExportingBackup, setIsExportingBackup] = useState(false);
+  const [isImportingBackup, setIsImportingBackup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showAdminPassword, setShowAdminPassword] = useState(false);
@@ -150,6 +155,58 @@ export default function ProfilPage() {
       setFormError(err.message);
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function handleExportBackup() {
+    setBackupError("");
+    setBackupSuccess("");
+    setIsExportingBackup(true);
+
+    try {
+      const result = await backupClient.exportData();
+
+      if (result?.canceled) {
+        return;
+      }
+
+      setBackupSuccess(
+        `A biztonsági mentés elkészült ezen a helyen: ${result.backupDirectoryPath}`
+      );
+    } catch (err) {
+      setBackupError(
+        err instanceof Error
+          ? err.message
+          : "A backup exportálása közben váratlan hiba történt."
+      );
+    } finally {
+      setIsExportingBackup(false);
+    }
+  }
+
+  async function handleImportBackup() {
+    setBackupError("");
+    setBackupSuccess("");
+    setIsImportingBackup(true);
+
+    try {
+      const result = await backupClient.importData();
+
+      if (result?.canceled) {
+        return;
+      }
+
+      setBackupSuccess(
+        "A backup visszaállítása elkészült. Az alkalmazás újraindul."
+      );
+    } catch (err) {
+      setBackupError(
+        err instanceof Error
+          ? err.message
+          : "A backup visszaállítása közben váratlan hiba történt."
+      );
+    } finally {
+      setIsImportingBackup(false);
     }
   }
 
@@ -389,6 +446,76 @@ export default function ProfilPage() {
           </div>
         </section>
       )}
+
+      <section className={`${styles.panel} ${styles.backupPanel}`}>
+        <div className={styles.panelHeader}>
+          <div>
+            <p className={styles.backupLabel}>Adatvedelem</p>
+            <h2>Biztonsági mentés és visszaállítás</h2>
+          </div>
+        </div>
+
+        <div className={styles.backupIntro}>
+          <p>
+            Itt tudod lementeni az alkalmazás összes fontos adatát, hogy később
+            ugyanazokat a recepteket és képeket tudd használni.
+          </p>
+          <p>
+            Ez akkor hasznos, ha új gépre költözöl, újratelepíted az appot,
+            vagy szeretnél egy saját biztonsági másolatot megőrizni.
+          </p>
+        </div>
+
+        <div className={styles.backupInfoGrid}>
+          <article className={styles.backupInfoCard}>
+            <h3>Mit ment el?</h3>
+            <p>
+              A recepteket, a profilhoz tartozó adatokat és a receptképeket egy
+              közös mentésbe teszi.
+            </p>
+          </article>
+
+          <article className={styles.backupInfoCard}>
+            <h3>Mikor érdemes használni?</h3>
+            <p>
+              Mielőtt gépet váltasz, Windows újratelepítés előtt, vagy ha csak
+              szeretnél egy biztos másolatot félretenni.
+            </p>
+          </article>
+        </div>
+
+        <div className={styles.backupWarningBox}>
+          <strong>Figyelem:</strong> a visszaállítás a jelenlegi adatokat
+          lecseréli a kiválasztott mentés tartalmára.
+        </div>
+
+        <div className={styles.backupActions}>
+          <button
+            type="button"
+            className="btn-green"
+            onClick={handleExportBackup}
+            disabled={isExportingBackup || isImportingBackup}
+          >
+            {isExportingBackup ? "Backup készül..." : "Backup exportálása"}
+          </button>
+          <button
+            type="button"
+            className={`${styles.restoreButton} btn-orange`}
+            onClick={handleImportBackup}
+            disabled={isExportingBackup || isImportingBackup}
+          >
+            {isImportingBackup ? "Visszaállítás..." : "Backup visszaállítása"}
+          </button>
+        </div>
+
+        {backupError ? <p className={styles.errorBox}>{backupError}</p> : null}
+        {backupSuccess ? <p className={styles.successBox}>{backupSuccess}</p> : null}
+
+        <p className={styles.backupHint}>
+          A mentés exportálásával egy külön másolat készül. A visszaállításnál
+          pedig egy korábban elmentett állapotot tudsz visszahozni.
+        </p>
+      </section>
     </section>
   );
 }

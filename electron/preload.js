@@ -25,6 +25,16 @@ const appApi = {
       return invoke("app:get-runtime-info");
     },
   },
+  backup: {
+    // A backup namespace kifejezetten a teljes desktop adatallomany
+    // exportjat es visszaallitasat kezeli.
+    exportData() {
+      return invoke("backup:export");
+    },
+    importData() {
+      return invoke("backup:import");
+    },
+  },
   auth: {
     // A vegso cel az, hogy ez a login mar ne NextAuth route-ot hivjon,
     // hanem kozvetlenul a desktop auth service-t.

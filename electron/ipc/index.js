@@ -1,6 +1,7 @@
 import { ipcMain } from "electron";
 import { registerAppIpc } from "./app.js";
 import { registerAuthIpc } from "./auth.js";
+import { registerBackupIpc } from "./backup.js";
 import { registerFavoriteIpc } from "./favorites.js";
 import { registerImageIpc } from "./images.js";
 import { registerProfileIpc } from "./profile.js";
@@ -17,6 +18,7 @@ import { registerRecipeIpc } from "./recipes.js";
 export function registerIpcHandlers(electronApp) {
   registerAppIpc(ipcMain, electronApp);
   registerAuthIpc(ipcMain);
+  registerBackupIpc(ipcMain);
   registerRecipeIpc(ipcMain);
   registerProfileIpc(ipcMain);
   registerFavoriteIpc(ipcMain);
