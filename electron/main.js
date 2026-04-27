@@ -206,6 +206,16 @@ async function ensureDesktopDatabase() {
     })
   );
 
+  // Fejlesztés közben azt szeretnénk, hogy az Electron app mindig közvetlenül
+  // a projekt aktuális `prisma/dev.db` fájlját használja.
+  // Így ha újraseedeljük vagy újraépítjük az adatbázist, az app rögtön a friss
+  // adatokat látja, nem egy korábban kimásolt régi másolatot.
+  if (!app.isPackaged) {
+    process.env.DATABASE_URL = toSqliteConnectionString(bundledDatabasePath);
+    writeMainLog("Fejlesztoi DATABASE_URL beallitva", process.env.DATABASE_URL);
+    return;
+  }
+
   // A telepitett alkalmazas ne a forraskod mappajaban keresse az adatbazist,
   // hanem a userData ala masolja ki az alap SQLite fajlt, es utana onnan
   // dolgozzon tovabb.

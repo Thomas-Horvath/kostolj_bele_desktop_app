@@ -1,6 +1,6 @@
 {
   "name": "kostolj_bele",
-  "version": "1.0.1",
+  "version": "2.0.1",
   "description": "A Kóstolj Bele receptes weboldal privát Windows desktop appá alakított változata.",
   "author": "Thomas Horvath",
   "private": true,
@@ -14,8 +14,6 @@
     "build": "prisma generate && node scripts/patch-prisma-client.mjs && next build && node scripts/prepare-standalone-assets.mjs",
     "build:web": "prisma generate && node scripts/patch-prisma-client.mjs && next build && node scripts/prepare-standalone-assets.mjs",
     "build:desktop": "npm run build:web && electron-builder",
-    "rebuild:electron": "electron-builder install-app-deps",
-    "rebuild:node": "npm rebuild better-sqlite3",
     "start": "next start",
     "start:electron": "cross-env NODE_ENV=production electron electron/main.js",
     "test:desktop": "cross-env NODE_ENV=test electron scripts/desktop-smoke-test.mjs",
@@ -41,28 +39,34 @@
       ".next/**/*",
       "package.json",
       "next.config.mjs",
-      "prisma.config.ts",
       "prisma/schema.prisma",
       "prisma/dev.db"
     ],
     "asarUnpack": [
+      "generated/**/*",
       ".next/**/*",
-      "node_modules/better-sqlite3/**/*",
       "prisma/**/*"
     ]
   },
+  "electronmon": {
+    "patterns": [
+      "!prisma/dev.db",
+      "!prisma/*.db",
+      "!prisma/*.db-journal",
+      "!prisma/*.db-wal",
+      "!prisma/*.db-shm"
+    ]
+  },
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^7.2.0",
-    "@prisma/client": "^7.2.0",
+    "@prisma/client": "6.16.2",
     "bcryptjs": "^3.0.2",
-    "better-sqlite3": "^12.0.0",
     "clsx": "^2.1.1",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "dotenv": "^16.5.0",
     "electron-store": "^11.0.2",
     "next": "^15.5.0",
-    "prisma": "^7.2.0",
+    "prisma": "6.16.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.3.0",

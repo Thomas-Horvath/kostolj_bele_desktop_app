@@ -5,8 +5,6 @@ import localFont from "next/font/local";
 import Footer from "./components/layout/Footer";
 import NoHoverTouch from "./components/ui/NoHoverTouch";
 import { Providers } from "./context/Providers";
-import { FavoriteProvider } from "./context/FavoriteContext";
-import { RateProvider } from "./context/RateContext";
 
 
 const dancingFont = localFont({
@@ -38,21 +36,17 @@ export default async function RootLayout({ children }) {
         {/* Desktop iranyban mar nem klasszikus weboldalkent gondolkodunk.
             Emiatt a shell egyszerubb, alkalmazasszerubb szerkezetet kap. */}
           <Providers>
-            <FavoriteProvider>
-              <NoHoverTouch />
-              <div className="app-shell">
-                <Header />
-                {/* A main tartalom rugalmasan kitolti a Header es Footer kozotti
-                    helyet. Igy rovid oldalakon, peldaul loginon, a Footer nem
-                    csuszik fel a tartalom ala, hanem az ablak legaljan marad. */}
-                <main className="app-content">
-                  <RateProvider>
-                    {children}
-                  </RateProvider>
-                </main>
-                <Footer />
-              </div>
-            </FavoriteProvider>
+            <NoHoverTouch />
+            <div className="app-shell">
+              <Header />
+              {/* A main tartalom rugalmasan kitolti a Header es Footer kozotti
+                  helyet. Igy rovid oldalakon, peldaul loginon, a Footer nem
+                  csuszik fel a tartalom ala, hanem az ablak legaljan marad. */}
+              <main className="app-content">
+                {children}
+              </main>
+              <Footer />
+            </div>
           </Providers>
       </body>
     </html>

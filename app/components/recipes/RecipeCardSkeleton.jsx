@@ -8,19 +8,8 @@ export default function RecipeCardSkeleton() {
         <div className={styles.img_skeleton}></div>
       </div>
       <div className={styles.content_container}>
-        <div className={styles.rate_container}>
-          <div className={styles.starsWrapper}>
-            <div className={styles.star_skeleton}></div>
-            <div className={styles.star_skeleton}></div>
-            <div className={styles.star_skeleton}></div>
-            <div className={styles.star_skeleton}></div>
-            <div className={styles.star_skeleton}></div>
-          </div>
-          <div className={styles.text_skeleton}></div>
-        </div>
         <div className={styles.title_skeleton}></div>
       </div>
     </div>
   );
 }
-

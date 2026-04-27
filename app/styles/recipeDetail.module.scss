@@ -24,7 +24,12 @@
 .hero_content {
     display: grid;
     align-content: start;
-    gap: 1rem;
+    gap: 1.4rem;
+}
+
+.hero_intro {
+    display: grid;
+    gap: 0.85rem;
 }
 
 .eyebrow {
@@ -40,34 +45,71 @@
     line-height: 1.1;
 }
 
-.meta_row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+.hero_text {
+    max-width: 48ch;
+    line-height: 1.8;
+    color: rgba($text, 0.8);
+}
+
+.meta_section {
+    display: grid;
+    gap: 0.9rem;
+    padding-top: 0.25rem;
+}
+
+.meta_group {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.meta_label {
+    font-size: $step--1;
+    text-transform: uppercase;
+    letter-spacing: 0.14rem;
+    color: rgba($text, 0.58);
+    font-weight: 700;
 }
 
 .meta_chip {
     display: inline-flex;
     align-items: center;
-    min-height: 2.5rem;
+    width: fit-content;
+    min-height: 2.6rem;
     padding: 0.65rem 1rem;
-    border-radius: 999px;
+    border-radius: 3px;
     background: rgba(#fff, 0.88);
     border: 1px solid rgba($dark-green, 0.18);
     color: rgba($text, 0.84);
+    font-weight: 600;
 }
 
 .image_card {
+    position: relative;
     background: rgba(#fff, 0.72);
     border-radius: 3px;
     padding: 0.8rem;
     border: 1px solid rgba($border-gray, 0.45);
 }
 
+.image_frame {
+    width: 100%;
+    min-height: 280px;
+    max-height: 520px;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 3px;
+    background:
+        linear-gradient(180deg, rgba(#fff, 0.95), rgba(#f7f1e5, 0.92));
+}
+
 .img {
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
     border-radius: 3px;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
 }
@@ -150,6 +192,16 @@
 
     .hero {
         padding: 1.75rem;
+    }
+
+    .image_frame {
+        min-height: 340px;
+    }
+
+    .meta_section {
+        grid-template-columns: repeat(2, minmax(0, max-content));
+        column-gap: 1rem;
+        row-gap: 1rem;
     }
 }
 

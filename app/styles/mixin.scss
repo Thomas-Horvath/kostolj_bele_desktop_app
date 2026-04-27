@@ -4,37 +4,53 @@
 
 // button style
 @mixin btn-content($background, $color) {
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   width: fit-content;
-  padding: .4rem 1.3rem;
+  min-height: 2.7rem;
+  padding: .58rem 1.15rem;
   border-radius: 3px;
-  box-shadow: $box-shadow;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   background-color: $background;
-  font-size: .9rem;
-  font-weight: 600;
+  font-size: .95rem;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   color: $color;
-  letter-spacing: .1rem;
-  transition: transform .07s ease-in-out;
+  letter-spacing: .03rem;
+  line-height: 1;
+  transition:
+    background-color .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .12s ease;
   margin: auto;
 
-  &:hover {
-    background: color.scale($background, $lightness: -10%);
-
+  @if $background == transparent {
+    background-color: rgba($dark-green, 0.04);
+    border-color: rgba($dark-green, 0.42);
   }
 
-
-
-
-
-
+  &:hover {
+    @if $background == transparent {
+      background-color: rgba($dark-green, 0.09);
+      border-color: rgba($dark-green, 0.6);
+    } @else {
+      background: color.scale($background, $lightness: -10%);
+    }
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
 
   &:active {
-    transform: scale(.99);
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba($white, 0.95), 0 0 0 5px rgba($dark-green, 0.2);
   }
 }
 

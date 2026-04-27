@@ -12,11 +12,11 @@
     gap: .75rem;
     padding: .95rem 1rem;
     border: 1px solid rgba($dark-green, 0.32);
-    border-radius: 14px;
+    border-radius: 3px;
     background: linear-gradient(135deg, rgba(#fff, 0.96), rgba(#f5efe4, 0.95));
     color: $text;
     font-weight: 700;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
 }
 
 .mobile_toggle_icon {
@@ -37,8 +37,8 @@
     margin-top: .75rem;
     background: linear-gradient(180deg, rgba(#fff, 0.9), rgba(#f7f2e8, 0.86));
     border: 1px solid rgba($border-gray, 0.55);
-    border-radius: 18px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
+    border-radius: 3px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     display: none;
 
     &.mobile_panel_open {
@@ -46,8 +46,8 @@
     }
 
     .category_container {
-        padding: .5rem .75rem 1.25rem;
-        border-radius: 18px;
+        padding: .25rem .45rem .75rem;
+        border-radius: 3px;
 
         .section_heading {
             display: flex;
@@ -57,20 +57,20 @@
         }
 
         h2 {
-
-            padding: 1rem .5rem;
-            border-bottom: 3px solid $border-gray;
-            margin-bottom: 1rem;
+            padding: .9rem .45rem .85rem;
+            border-bottom: 2px solid $border-gray;
+            margin-bottom: .8rem;
             position: relative;
+            font-size: 1rem;
 
             &::after {
                 content: "";
                 position: absolute;
                 left: 0;
-                bottom: -3px;
+                bottom: -2px;
                 background: $dark-green;
-                width: 60px;
-                height: 3px;
+                width: 42px;
+                height: 2px;
 
             }
         }
@@ -78,40 +78,28 @@
         .category_list {
             display: flex;
             flex-direction: column;
-            gap: .55rem;
+            gap: .45rem;
         }
 
         li {
-            border-bottom: 1px solid $border-gray;
-
             list-style: none;
         }
 
         .top_level_item,
         .category_item {
             border: 1px solid rgba($border-gray, 0.8);
-            border-radius: 14px;
+            border-radius: 3px;
             overflow: hidden;
             background: rgba(#fff, 0.58);
         }
 
-        .category_row {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-items: stretch;
-        }
-
-        .category_row_open {
-            border-bottom: 1px solid rgba($border-gray, 0.75);
-        }
-
         .links {
-            padding: .9rem 1rem;
+            padding: .7rem .8rem;
             display: flex;
             align-items: center;
-            min-height: 3.25rem;
+            min-height: 2.7rem;
             width: 100%;
-             
+            font-size: .95rem;
             transition: color .15s ease-in-out, transform .1s ease-in-out, background .15s ease-in-out;
 
             &:hover {
@@ -123,81 +111,6 @@
 
         .active_link {
             background: linear-gradient(90deg, rgba($dark-green, 0.14), rgba($dark-green, 0.03));
-            color: $dark-green;
-            font-weight: 700;
-        }
-
-        .category_toggle {
-            min-width: 3.5rem;
-            appearance: none;
-            -webkit-appearance: none;
-            border-left: 1px solid rgba($border-gray, 0.75);
-            border-bottom: 0;
-            border-top: 0;
-            border-right: 0;
-            background: linear-gradient(180deg, rgba(#fff, 0.9), rgba(#f6f0e6, 0.92));
-            color: $dark-green;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: none;
-            outline: none;
-            transition: background .15s ease-in-out, transform .12s ease-in-out;
-
-            &:hover {
-                background: rgba($dark-green, 0.08);
-            }
-
-            &:focus,
-            &:focus-visible,
-            &:active {
-                outline: none;
-                box-shadow: none;
-            }
-        }
-
-        .chevron {
-            width: .7rem;
-            height: .7rem;
-            border-right: 2px solid currentColor;
-            border-bottom: 2px solid currentColor;
-            transform: rotate(45deg) translateY(-1px);
-            transition: transform .18s ease-in-out;
-            transform-origin: center;
-        }
-
-        .chevron_open {
-            transform: rotate(225deg) translateY(-1px);
-        }
-
-        .subcategory_list {
-            padding: .25rem .45rem .6rem;
-            display: flex;
-            flex-direction: column;
-            gap: .25rem;
-        }
-
-        .subcategory_item {
-            border-bottom: 0;
-        }
-
-        .subcategory_link {
-            display: block;
-            padding: .7rem .85rem;
-            color: rgba($text, 0.82);
-            font-size: $step--1;
-            border-radius: 10px;
-            transition: color .15s ease-in-out, transform .1s ease-in-out, background .15s ease-in-out;
-
-            &:hover {
-                color: $dark-green;
-                background: rgba($dark-green, 0.06);
-                transform: translateX(6px);
-            }
-        }
-
-        .active_sublink {
-            background: rgba($dark-green, 0.12);
             color: $dark-green;
             font-weight: 700;
         }
@@ -216,40 +129,51 @@
         line-height: 1;
     }
 
-    .about_container {
-        margin: 0;
-        padding: .5rem .75rem 1.5rem;
-   
-        border-radius: 18px;
+    .search_container {
+        padding: 0 .45rem .75rem;
+    }
+
+    .searchPanel {
+        padding: .8rem;
+        border-top: 1px solid rgba($border-gray, 0.7);
+    }
+
+    .searchPanelHeader {
+        margin-bottom: .65rem;
 
         h2 {
-
-            padding: 1rem .5rem;
-            border-bottom: 3px solid $border-gray;
-            margin-bottom: 1rem;
-            position: relative;
+            font-size: 1rem;
+            padding: 0;
+            margin: 0;
+            border: 0;
 
             &::after {
-                content: "";
-                position: absolute;
-                left: 0;
-                bottom: -3px;
-                background: $dark-green;
-                width: 60px;
-                height: 3px;
-
+                content: none;
             }
         }
+    }
 
-        & input {
+    .searchEyebrow {
+        text-transform: uppercase;
+        letter-spacing: .16rem;
+        font-size: .72rem;
+        color: rgba($dark-green, 0.8);
+        font-weight: 700;
+        margin-bottom: .3rem;
+    }
+
+    .searchForm {
+        display: grid;
+        gap: .75rem;
+
+        input {
             width: 100%;
-            font-size: 1rem;
-            padding: .85rem 1rem;
+            font-size: .95rem;
+            padding: .82rem .95rem;
             color: $text;
             font-family: inherit;
             border: 1px solid rgba($dark-green, 0.55);
             border-radius: 3px;
-            margin-bottom: .75rem;
             background: rgba(#fff, 0.92);
 
             &:active,
@@ -259,14 +183,7 @@
             }
         }
 
-        .help_text {
-            font-size: $step--1;
-            color: rgba($text, 0.7);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        & button {
+        button {
             width: 100%;
         }
     }
@@ -291,13 +208,68 @@
 }
 
 @media (min-width: 992px) {
+    .sidebar_shell {
+        // Desktopon a sidebar ne csak sticky legyen, hanem tenylegesen
+        // maradjon ugyanott az ablakban, mikozben a fo tartalom gorgetodik.
+        position: fixed;
+        top: 6rem;
+        left: max(1rem, calc((100vw - 1400px) / 2 + 1rem));
+        width: 17.5rem;
+        align-self: start;
+        z-index: 5;
+    }
+
     .aside {
-        .about_container {
-            & button {
-                width: 150px;
-                margin-left: auto;
-                margin-right: 0;
+        // Desktopon a bal panel maradjon rogzitve a helyen.
+        // Ha a viewport magassaga kisebb, mint a sidebar tartalma,
+        // akkor automatikusan kapjon sajat gorgetest.
+        // Az also helyet szandekosan nagyobbra hagyjuk, hogy amikor a footer
+        // beleer a viewportba, a sidebar alja ne csusszon ra a lablere.
+        max-height: calc(100vh - 9rem);
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
+
+        .category_container {
+            .category_list {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: .5rem;
+            }
+
+            .top_level_item,
+            .category_item {
+                display: flex;
+                height: 100%;
+            }
+
+            .links {
+                flex: 1;
+                height: 100%;
+                min-height: 2rem;
+                padding: .62rem .72rem;
+                align-self: stretch;
+                justify-content: center;
+                text-align: center;
             }
         }
+
+        .searchPanel {
+            padding-top: .9rem;
+        }
+    }
+
+    .aside::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .aside::-webkit-scrollbar-track {
+        background: rgba($border-gray, 0.18);
+        border-radius: 999px;
+    }
+
+    .aside::-webkit-scrollbar-thumb {
+        background: rgba($dark-green, 0.22);
+        border-radius: 999px;
     }
 }

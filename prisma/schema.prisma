@@ -1,13 +1,19 @@
 
 generator client {
-  // A seed és a sima Node-alapú scriptek miatt itt a JS-alapú kliensgenerátort használjuk.
-  // Ezt a Next és a Prisma CLI is stabilan ugyanúgy tudja importálni.
+  // A klienst külön mappába generáljuk, hogy az Electron build során
+  // kiszámítható helyről tudjuk becsomagolni és importálni.
   provider = "prisma-client-js"
   output   = "../generated/prisma"
+  // A library engine nem külön query-engine folyamatot spawnol,
+  // hanem a Prisma motort az app folyamatán belül tölti be.
+  // Ez a telepített Windows desktop appnál stabilabb, mert így elkerüljük
+  // a korábbi `spawn EPERM` hibát bejelentkezéskor és más első DB műveleteknél.
+  engineType = "library"
 }
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -27,7 +33,6 @@ model User {
 
   recipes  Recipe[]   @relation("UserRecipes")
   Favorite Favorite[]
-  ratings  Rating[]
 }
 
 model Recipe {
@@ -36,7 +41,6 @@ model Recipe {
   slug     String @unique
   imageURL String
   note     String?
-  rate     Float? @default(4.0)
 
   ingredients Ingredient[]
   steps       Step[]
@@ -50,7 +54,6 @@ model Recipe {
   authorId    String
   author      User       @relation("UserRecipes", fields: [authorId], references: [id], onDelete: Cascade)
   favoritedBy Favorite[]
-  ratings     Rating[]
 }
 
 model Type {
@@ -97,16 +100,4 @@ model Favorite {
   recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
   @@id([userId, recipeId])
-}
-
-model Rating {
-  id       Int    @id @default(autoincrement())
-  userId   String
-  recipeId Int
-  score    Float // 1-5
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, recipeId])
 }

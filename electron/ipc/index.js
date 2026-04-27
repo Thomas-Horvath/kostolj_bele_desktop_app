@@ -5,7 +5,6 @@ import { registerBackupIpc } from "./backup.js";
 import { registerFavoriteIpc } from "./favorites.js";
 import { registerImageIpc } from "./images.js";
 import { registerProfileIpc } from "./profile.js";
-import { registerRatingIpc } from "./rating.js";
 import { registerRecipeIpc } from "./recipes.js";
 
 // Az IPC regisztraciot egy helyre gyujtjuk, hogy a main process tiszta maradjon
@@ -22,6 +21,5 @@ export function registerIpcHandlers(electronApp) {
   registerRecipeIpc(ipcMain);
   registerProfileIpc(ipcMain);
   registerFavoriteIpc(ipcMain);
-  registerRatingIpc(ipcMain);
   registerImageIpc(ipcMain);
 }

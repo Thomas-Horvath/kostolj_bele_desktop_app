@@ -9,17 +9,15 @@ import path from "node:path";
     npm run test:desktop
 
   Miert fontos ez?
-  - A projektben a Prisma SQLite adaptere natív `better-sqlite3` modult hasznal.
-  - Fejlesztes kozben ezt most Electron runtime-hoz forditjuk.
-  - Emiatt a service reteget akkor tudjuk hitelesen tesztelni, ha ugyanabban
-    a runtime-ban fut, ahol az Electron IPC is hasznalni fogja.
+  - A desktop backend ugyanabban az Electron runtime-ban fut, mint az IPC.
+  - Emiatt a service reteget itt ugyanabban a kornyezetben ellenorizzuk,
+    ahol a valodi alkalmazas is hasznalni fogja.
 
   Mit probal vegig?
   - bejelentkezes
   - receptlista es kategoriak
   - recept letrehozas keppel
   - recept lekeres slug alapjan
-  - rating mentese
   - kedvenc kapcsolasa
   - profil dashboard lekerese
   - admin user letrehozas
@@ -71,8 +69,20 @@ async function fileExists(filePath) {
   }
 }
 
+async function cleanupTestImagesDir() {
+  try {
+    await fs.rm(testImagesDir, { recursive: true, force: true });
+  } catch (error) {
+    // Windows alatt a vírusirtó vagy az előnézet-kezelés néha rövid ideig még
+    // foghatja a tesztkép fájlt. Ilyenkor ne a cleanup miatt bukjon el a teszt.
+    if (error?.code !== "EPERM") {
+      throw error;
+    }
+  }
+}
+
 async function runDesktopSmokeTest() {
-  await fs.rm(testImagesDir, { recursive: true, force: true });
+  await cleanupTestImagesDir();
   await fs.mkdir(testImagesDir, { recursive: true });
 
   // A service importok szandekosan a RECIPE_IMAGES_DIR beallitasa utan tortennek.
@@ -94,7 +104,6 @@ async function runDesktopSmokeTest() {
     listFavoriteRecipeIds,
     toggleFavoriteRecipe,
   } = await import("../lib/services/favoriteService.js");
-  const { saveRecipeRating } = await import("../lib/services/ratingService.js");
   const { prisma } = await import("../lib/prisma.js");
 
   const uniqueSuffix = Date.now();
@@ -161,13 +170,6 @@ async function runDesktopSmokeTest() {
     const recipeBySlug = await getRecipeBySlug(createdRecipe.slug);
     assert(recipeBySlug?.id === createdRecipe.id, "A slug alapu lekeres hibas.");
     logStep("recept reszletezo adatlekeres mukodik");
-
-    const ratingResult = await saveRecipeRating(
-      { recipeId: createdRecipe.id, score: 4.5 },
-      adminUser
-    );
-    assert(ratingResult.average === 4.5, "A rating atlag nem frissult.");
-    logStep("rating mentese mukodik");
 
     const favoriteOn = await toggleFavoriteRecipe(createdRecipe.id, adminUser);
     assert(favoriteOn.favorited, "A kedvenc bekapcsolasa nem sikerult.");
@@ -255,7 +257,7 @@ async function runDesktopSmokeTest() {
       });
     }
 
-    await fs.rm(testImagesDir, { recursive: true, force: true });
+    await cleanupTestImagesDir();
     await prisma.$disconnect();
   }
 }

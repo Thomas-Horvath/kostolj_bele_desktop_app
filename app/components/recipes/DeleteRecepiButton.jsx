@@ -1,13 +1,11 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useRate } from "../../context/RateContext";
 import ConfirmDialog from "../ui/ConfirmDialog";
 import styles from "../../styles/profil.module.scss";
 import recipesClient from "../../../lib/renderer/api/recipesClient";
 
 export default function DeleteRecipeButton({ recipeId }) {
-  const { refreshRecipes } = useRate();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -21,7 +19,6 @@ export default function DeleteRecipeButton({ recipeId }) {
       await recipesClient.remove(recipeId);
       setIsDialogOpen(false);
       router.refresh();
-      refreshRecipes();
       router.push("/receptek");
     } catch {
       setDeleteError("Hiba történt a törlés közben.");

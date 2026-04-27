@@ -4,8 +4,7 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 1rem;
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 1rem;
 }
 
@@ -17,29 +16,88 @@
     width: 100%;
     min-width: 0;
     padding: 0;
+    display: grid;
+    gap: 1rem;
+}
+
+.searchPanel {
+    padding: .95rem 1rem;
+    border: 1px solid rgba($border-gray, 0.55);
+    border-radius: 3px;
+    background: linear-gradient(135deg, rgba(#fff, 0.96), rgba(#f7f1e6, 0.94));
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+}
+
+.searchPanelHeader {
+    margin-bottom: .65rem;
+
+    h2 {
+        font-size: 1.05rem;
+    }
+}
+
+.searchEyebrow {
+    text-transform: uppercase;
+    letter-spacing: .16rem;
+    font-size: .76rem;
+    color: rgba($dark-green, 0.8);
+    font-weight: 700;
+    margin-bottom: .35rem;
+}
+
+.searchForm {
+    display: grid;
+    gap: .75rem;
+
+    input {
+        width: 100%;
+        font-size: 1rem;
+        padding: .9rem 1rem;
+        color: $text;
+        font-family: inherit;
+        border: 1px solid rgba($dark-green, 0.45);
+        border-radius: 3px;
+        background: rgba(#fff, 0.94);
+
+        &:focus,
+        &:active {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($dark-green, 0.12);
+        }
+    }
+}
+
+.contentScroll {
+    min-width: 0;
 }
 
 @media (min-width: 768px) {
     .layout {
         padding: 1.5rem 1rem 2rem;
     }
+
+    .searchForm {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+    }
 }
 
 @media (min-width: 992px) {
     .layout {
-        flex-direction: row;
-        align-items: flex-start;
+        grid-template-columns: 17.5rem minmax(0, 1fr);
+        align-items: start;
         gap: 1.5rem;
     }
 
     .sidebar {
-        width: 21rem;
-        flex-shrink: 0;
-        position: sticky;
-        top: 6rem;
+        width: 100%;
     }
 
     .content {
-        flex: 1;
+        width: 100%;
+    }
+
+    .contentScroll {
+        padding-bottom: 1rem;
     }
 }

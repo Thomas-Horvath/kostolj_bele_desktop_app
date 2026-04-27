@@ -98,11 +98,6 @@ const appApi = {
       return invoke("favorites:toggle", recipeId);
     },
   },
-  rating: {
-    save(payload) {
-      return invoke("rating:save", payload);
-    },
-  },
   images: {
     // A kepekhez kesobb desktop file picker es sajat URL-logika fog tartozni.
     selectFile() {

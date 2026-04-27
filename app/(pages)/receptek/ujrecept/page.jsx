@@ -4,7 +4,6 @@ import style from "../../../styles/newrecipe.module.scss"
 import { useRouter } from "next/navigation";
 import slugify from "../../../../utilities/slugify";
 import RecipeForm from "../../../components/recipes/RecipeForm";
-import { useRate } from "../../../context/RateContext";
 import Spinner from "../../../components/ui/Spinner";
 import { useDesktopAuth } from "../../../context/DesktopAuthContext";
 import recipesClient from "../../../../lib/renderer/api/recipesClient";
@@ -13,7 +12,6 @@ import recipesClient from "../../../../lib/renderer/api/recipesClient";
 const NewRecipe = () => {
     const { status } = useDesktopAuth();
     const router = useRouter();
-    const { refreshRecipes } = useRate();
     const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
 
     // A recept létrehozása védett funkció, ezért vendég esetén visszairányítunk.
@@ -43,9 +41,6 @@ const NewRecipe = () => {
                 type: "success",
                 text: "A recept sikeresen létrejött, átirányítás a receptek oldalára.",
             });
-            // A listat frissitjuk, hogy a memorias allapotban is azonnal
-            // megjelenhessen az uj recept, ne csak teljes oldalfrissites utan.
-            refreshRecipes();
             setTimeout(() => {
                 router.push('/receptek');
             }, 450);

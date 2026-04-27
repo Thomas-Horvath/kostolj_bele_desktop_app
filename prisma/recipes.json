@@ -3,7 +3,6 @@
     "name": "Rostélyos sült",
     "slug": "rostelyos-sult",
     "imageURL": "rostelyos-sult.jpg",
-    "rate": 4.5,
     "type": 2,
     "ingredients": [
       {
@@ -55,7 +54,6 @@
     "name": "Sült spárga",
     "slug": "sult-sparga",
     "imageURL": "sult-sparga.jpg",
-    "rate": 4.2,
     "type": 3,
     "ingredients": [
       {
@@ -109,7 +107,6 @@
     "name": "Big Night Pizza",
     "slug": "big-night-pizza",
     "imageURL": "big-night-pizza.webp",
-    "rate": 3.5,
     "type": 6,
     "ingredients": [
       {
@@ -184,7 +181,6 @@
     "name": "Áfonyával és almával töltött tök",
     "slug": "afonyaval-es-almaval-toltott-tok",
     "imageURL": "toltott-tok.jpg",
-    "rate": 4.8,
     "type": 4,
     "ingredients": [
       {
@@ -249,7 +245,6 @@
     "name": "Mic's Yorkshire Puds",
     "slug": "mics-yorkshire-puds",
     "imageURL": "yorkshire-pudding.jpg",
-    "rate": 4.6,
     "type": 4,
     "ingredients": [
       {
@@ -312,7 +307,6 @@
     "name": "Régimódi zabliszt sütik",
     "slug": "regimodi-zabliszt-sutik",
     "imageURL": "regimodi-zabliszt-sutik.jpg",
-    "rate": 4,
     "type": 4,
     "ingredients": [
       {
@@ -377,7 +371,6 @@
     "name": "Áfonya zabliszt szeletek",
     "slug": "afonya-zabliszt-szeletek",
     "imageURL": "afonya-zabliszt-szeletek.jpg",
-    "rate": 3.9,
     "type": 4,
     "ingredients": [
       {
@@ -437,7 +430,6 @@
     "name": "Curry csirke saláta",
     "slug": "curry-csirke-salata",
     "imageURL": "curry-csirke-salata.jpg",
-    "rate": 4.5,
     "type": 1,
     "ingredients": [
       {
@@ -507,7 +499,6 @@
     "name": "Curry lencse és rizs",
     "slug": "curry-lencse-es-rizs",
     "imageURL": "lentils3.jpg",
-    "rate": 3.7,
     "type": 3,
     "ingredients": [
       {

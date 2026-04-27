@@ -2,11 +2,55 @@
 @use "./variables" as *;
 
 
+.heart {
+    @extend %flex-center;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: $white;
+    border: none;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 50%;
+    width: 2.6rem;
+    height: 2.6rem;
+    padding: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 3;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+    transition: box-shadow .2s ease, transform .2s ease;
+
+    &:hover {
+        box-shadow: 0 0 5px 5px rgba(0, 0, 0, .2);
+        transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+        box-shadow:
+            0 0 0 2px rgba($white, 0.95),
+            0 0 0 4px rgba($dark-green, 0.22),
+            0 8px 18px rgba(0, 0, 0, 0.16);
+    }
+}
+
+.svg {
+    font-size: 1.5rem;
+    color: $color-gray;
+    font-weight: bold;
+    transform: translateY(1.5px);
+}
+
+.added_heart {
+    color: $tomato;
+}
+
 .card {
     flex: 1;
     min-width: 250px;
     width: 100%;
-    max-width: 400px;
+    max-width: 350px;
     height: fit-content;
     border-radius: 3px;
     overflow: hidden;
@@ -19,41 +63,6 @@
 
     .title {
         margin-top: 1rem;
-    }
-
-    .heart {
-        @extend %flex-center;
-        position: absolute;
-        right: 1rem;
-        top: 1rem;
-        background: $white;
-        border-radius: 50%;
-        width: 2.6rem;
-        height: 2.6rem;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-        z-index: 3;
-
-        &:hover {
-            box-shadow: 0 0 5px 5px rgba(0, 0, 0, .2);
-        }
-
-
-
-
-
-        & .svg {
-            font-size: 1.5rem;
-            color: $color-gray;
-            font-weight: bold;
-            transform: translateY(1.5px);
-
-            &.added_heart {
-                color: $tomato;
-            }
-        }
-
-
     }
 
 
@@ -80,34 +89,10 @@
 
 
     .content_container {
-        height: 7rem;
-        padding: .4rem;
-
-        .rate_container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 1.5rem;
-
-            p {
-                font-size: 1rem;
-            }
-
-            .starsWrapper {
-                display: flex;
-                justify-content: center;
-                padding: .6rem 0;
-                gap: .5rem;
-
-                .star {
-
-                    color: $main-gold;
-                    font-size: 1.3rem;
-
-
-                }
-            }
-        }
+        min-height: 5.2rem;
+        padding: .85rem .7rem .25rem;
+        display: grid;
+        align-items: center;
     }
 }
 
@@ -124,9 +109,7 @@
 
 .skeleton {
   .img_skeleton,
-  .title_skeleton,
-  .text_skeleton,
-  .star_skeleton {
+  .title_skeleton {
     background: linear-gradient(
         45deg,
       #d1d1d1 25%,   // sötétebb szürke
@@ -149,19 +132,6 @@
     margin-top: 10px;
     border-radius: 3px;
   }
-
-  .text_skeleton {
-    width: 40px;
-    height: 15px;
-    border-radius: 3px;
-  }
-
-  .star_skeleton {
-    width: 20px;
-    height: 20px;
-    margin-right: 4px;
-    border-radius: 50%;
-  }
 }
 
 
@@ -169,11 +139,12 @@
 
 
 :global(.no-hover) {
-    .card {
-        .heart:hover {
-            box-shadow: none;
-        }
+    .heart:hover {
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+        transform: none;
+    }
 
+    .card {
         .img_container {
             .image {
                 &:hover {

@@ -1,32 +1,37 @@
 "use client";
 
-import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { useFavorites } from "../../context/FavoriteContext";
-import { useRouter } from "next/navigation";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useFavorite } from "../../context/FavoriteContext";
 import styles from "../../styles/recipeCard.module.scss";
-import { useDesktopAuth } from "../../context/DesktopAuthContext";
 
 export default function FavoriteButton({ recipeId }) {
-  const { favorites, toggleFavorite } = useFavorites();
-  const isFavorite = favorites.includes(recipeId);
-  const { isAuthenticated } = useDesktopAuth();
-  const router = useRouter();
-
-  if (!isAuthenticated) return null;
+  // A gomb csak a saját receptjéhez tartozó állapotot figyeli.
+  // Ettől nem kell az egész lista összes favoritját újra renderelni.
+  const { isFavorite, isPending, toggleFavorite } = useFavorite(recipeId);
 
   return (
-    <span
+    <button
+      type="button"
       className={styles.heart}
-      onClick={() => {
-        toggleFavorite(recipeId);
-        router.refresh();
+      onClick={(event) => {
+        // A szív gomb a kártyán belül egy Link fölött ül.
+        // Ezért leállítjuk a default kattintást és a bubblingot is,
+        // különben a kedvenc jelölés közben a kártya navigációja is elindulhatna.
+        event.preventDefault();
+        event.stopPropagation();
+        toggleFavorite();
       }}
+      disabled={isPending}
+      aria-pressed={isFavorite}
+      aria-label={isFavorite ? "Eltávolítás a kedvencek közül" : "Hozzáadás a kedvencekhez"}
     >
+      {/* A vizuális állapotot teljesen a store-ból kapjuk:
+          nem helyi useState dönti el, hanem az aktuális favorit snapshot. */}
       {!isFavorite ? (
         <FaRegHeart className={styles.svg} />
       ) : (
         <FaHeart className={`${styles.svg} ${styles.added_heart}`} />
       )}
-    </span>
+    </button>
   );
 }

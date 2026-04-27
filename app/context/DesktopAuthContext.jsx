@@ -35,7 +35,7 @@ export function DesktopAuthProvider({ children }) {
       setRuntimeError(
         error instanceof Error
           ? error.message
-          : "Nem sikerult beolvasni a desktop auth allapotot."
+          : "Nem sikerült beolvasni a desktop auth állapotot."
       );
       return {
         ok: false,
@@ -69,11 +69,11 @@ export function DesktopAuthProvider({ children }) {
       setRuntimeError(
         error instanceof Error
           ? error.message
-          : "Nem sikerult vegrehajtani a desktop bejelentkezest."
+          : "Nem sikerült végrehajtani a desktop bejelentkezést."
       );
       return {
         ok: false,
-        message: "Nem sikerult vegrehajtani a desktop bejelentkezest.",
+        message: "Nem sikerült végrehajtani a desktop bejelentkezést.",
       };
     }
   }
@@ -89,7 +89,7 @@ export function DesktopAuthProvider({ children }) {
       setRuntimeError(
         error instanceof Error
           ? error.message
-          : "Nem sikerult vegrehajtani a kijelentkezest."
+          : "Nem sikerült végrehajtani a kijelentkezést."
       );
     }
   }
@@ -119,7 +119,7 @@ export function useDesktopAuth() {
 
   if (!context) {
     throw new Error(
-      "A useDesktopAuth csak DesktopAuthProvider alatt hasznalhato."
+      "A useDesktopAuth csak DesktopAuthProvider alatt használható."
     );
   }
 

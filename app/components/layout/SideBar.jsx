@@ -20,7 +20,7 @@ const SideBar = () => {
           setOrderedTypes(Array.isArray(data) ? data : []);
         }
       } catch (error) {
-        console.error("Nem sikerult lekerdezni a kategoriakat.", error);
+        console.error("Nem sikerült lekérdezni a kategóriákat.", error);
 
         if (isMounted) {
           setOrderedTypes([]);

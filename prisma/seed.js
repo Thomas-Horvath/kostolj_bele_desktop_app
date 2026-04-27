@@ -1,3 +1,4 @@
+import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { readFile } from "node:fs/promises";
 import { prisma } from "../lib/prisma.js";
@@ -15,15 +16,6 @@ const recipesData = JSON.parse(
 );
 
 async function main() {
-  await prisma.favorite.deleteMany();
-  await prisma.rating.deleteMany();
-  await prisma.step.deleteMany();
-  await prisma.ingredient.deleteMany();
-  await prisma.recipe.deleteMany();
-  await prisma.subtype.deleteMany();
-  await prisma.type.deleteMany();
-  await prisma.user.deleteMany();
-
   // A kategóriákat upserteljük, hogy többszöri seednél se duplázódjanak.
   for (const type of CATEGORY_DEFINITIONS) {
     const { subtypes = [], ...typeData } = type;
@@ -54,8 +46,8 @@ async function main() {
     }
   }
 
-  // A projekt kérésének megfelelően három fix userrel készül az alapállapot.
-  // Tamás admin, Katinka és Test normál felhasználó.
+  // A projekt kérésének megfelelően két fix userrel készül az alapállapot.
+  // Tamás admin, Katinka normál felhasználó.
   await prisma.user.createMany({
     data: [
       {
@@ -67,29 +59,22 @@ async function main() {
         role: "ADMIN",
       },
       {
-        name: "Károly",
-        username: "Károly",
+        name: "Katinka",
+        username: "Katinka",
         emailVerified: new Date(),
-        email: "kar@example.com",
+        email: "kate@example.com",
         password: await bcrypt.hash("Password", 10),
-      },
-      {
-        name: "Test",
-        username: "Test",
-        emailVerified: new Date(),
-        email: "test@example.com",
-        password: await bcrypt.hash("Password", 10),
-      },
+      }
     ],
   });
 
   const allUsers = await prisma.user.findMany();
   const tamas = allUsers.find((u) => u.username === "Tamás");
-  const karoly = allUsers.find((u) => u.username === "Károly");
-  const testUser = allUsers.find((u) => u.username === "Test");
+  const katinka = allUsers.find((u) => u.username === "Katinka");
 
-  // A minta recepteket váltakozva osztjuk ki a három felhasználó között.
-  const recipeAuthors = [tamas, karoly, testUser];
+
+  // A minta recepteket váltakozva osztjuk ki a két felhasználó között.
+  const recipeAuthors = [tamas, katinka];
   for (let i = 0; i < recipesData.length; i++) {
     const recipe = recipesData[i];
     const author = recipeAuthors[i % recipeAuthors.length];
@@ -102,7 +87,6 @@ async function main() {
         slug: recipe.slug,
         imageURL: recipe.imageURL,
         note: recipe.note?.trim() || null,
-        rate: recipe.rate ?? 4.0,
         author: {
           connect: { id: author.id },
         },
@@ -130,7 +114,7 @@ async function main() {
       },
     });
 
-    // A kedvencek és ratingek vegyesen kerülnek szétosztásra,
+    // A kedvencek vegyesen kerülnek szétosztásra,
     // így a seedelt adat közelebb áll a valós használathoz.
     const favoriteOwner = recipeAuthors[(i + 1) % recipeAuthors.length];
     await prisma.favorite.create({
@@ -139,18 +123,6 @@ async function main() {
         recipeId: createdRecipe.id,
       },
     });
-
-    const usersForRating = [tamas, katinka, testUser];
-    for (const user of usersForRating) {
-      const randomScore = Math.floor(Math.random() * 5) + 1;
-      await prisma.rating.create({
-        data: {
-          userId: user.id,
-          recipeId: createdRecipe.id,
-          score: randomScore,
-        },
-      });
-    }
   }
 
 }

@@ -1,364 +1,230 @@
+@use "sass:color";
 @use "./variables" as *;
 
 .home {
-    min-height: 100vh;
-
-    .img_container {
-        width: 100%;
-        height: 200px;
-        position: relative;
-
-
-
-        .banner_img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            box-shadow: $box-shadow;
-            z-index: 1;
-            filter: drop-shadow();
-        }
-
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: -10px;
-            width: 105%;
-            height: 105%;
-            background-color: rgba(0, 0, 0, 0.4);
-
-        }
-
-        .text_wrapper {
-            max-width: 1400px;
-            width: 100%;
-            height: 100%;
-            margin: 0 auto;
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 100%;
-            z-index: 1;
-
-
-            .text_container {
-                z-index: 2;
-                padding: 1rem;
-                background: $dark-green;
-                width: 100%;
-                height: 8.9rem;
-                display: flex;
-                align-items: flex-start;
-                flex-direction: column;
-                justify-content: center;
-
-                h1 {
-                    font-size: $step-5;
-                    color: $yellow;
-                }
-
-                p {
-                    margin-top: .3rem;
-                    color: $white-smoke;
-                    font-size: $step-2;
-                }
-            }
-        }
-    }
-
-    .content {
-        max-width: 1400px;
-        height: auto;
-        margin: auto;
-        padding: 10rem 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-
-        .main_container {
-            width: 100%;
-            padding: 1 1rem;
-
-            .main_title {
-                padding-bottom: 1rem;
-                font-size: $step-3;
-                position: relative;
-                border-bottom: 3px solid $border-gray ;
-                margin-bottom: 2rem;
-
-                &::after {
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    bottom: -3px;
-                    background: $dark-green;
-                    width: 60px;
-                    height: 3px;
-
-                }
-            }
-
-            .card_container {
-                display: grid;
-                grid-template-columns: 1fr;
-                place-items: center;
-                gap: 2rem;
-            }
-        }
-
-
-
-
-    }
-
-
-
-    .subscribtion {
-        background: $orange;
-        padding: 2rem;
-        text-align: center;
-
-        h3 {
-            font-size: $step-4;
-        }
-
-        h4 {
-            font-size: $step-1;
-            margin: 1rem 0;
-        }
-
-        .form_container {
-            max-width: 1400px;
-            margin: auto;
-
-            .input_content {
-
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                align-items: center;
-                gap: 2rem;
-                margin: 1rem auto;
-                max-width: 1000px;
-
-            }
-
-            .input {
-                height: 2.5rem;
-                flex: 1;
-                padding: 0 1rem;
-                font-size: 1.2rem;
-                font-family: inherit;
-                border: 1px solid $dark-green;
-
-                &:focus {
-                    outline: none;
-                }
-            }
-
-            .checkbox_container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 1rem;
-                cursor: pointer;
-                -webkit-tap-highlight-color: transparent;
-
-                .checkbox {
-                    display: none; // Eredeti checkbox elrejtése
-                }
-
-                .custom_checkbox {
-                    width: 22px;
-                    height: 22px;
-                    border: 2px solid $dark-green;
-                    border-radius: 3px;
-                    background-color: $white;
-                    position: relative;
-                }
-
-                // Pipa hozzáadása, amikor a checkbox be van jelölve
-                .checkbox:checked+.custom_checkbox {
-                    background-color: $dark-green;
-                    border-color: $dark-green;
-                }
-
-                .checkbox:checked+.custom_checkbox::after {
-                    content: "✓";
-                    position: absolute;
-                    top: 45%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    color: white;
-                    font-size: 1.2rem;
-                }
-
-            }
-
-        }
-
-        .subscribe_btn {
-            margin: 0;
-            height: 2.5rem;
-            flex: 1;
-            letter-spacing: .2rem;
-            box-shadow: none;
-
-            &:hover {
-                background: $dark-green;
-                color: $white;
-            }
-        }
-    }
-
+    min-height: calc(100vh - 4.4rem);
+    display: grid;
 }
 
+.guestHero {
+    position: relative;
+    min-height: calc(100vh - 4.4rem);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.guestBanner {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.guestOverlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(135deg, rgba(#1b1b1b, 0.42), rgba(#0d0d0d, 0.52)),
+        linear-gradient(180deg, rgba($dark-green, 0.18), rgba($orange, 0.14));
+}
+
+.guestContent {
+    position: relative;
+    z-index: 1;
+    width: min(760px, calc(100% - 2rem));
+    padding: 2rem 1.5rem;
+    text-align: center;
+    display: grid;
+    gap: 1rem;
+
+    h1 {
+        
+        font-size: $step-8;
+        color: $white;
+        line-height: 0.96;
+    }
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18rem;
+    font-size: $step--1;
+    color: rgba(#fff6d7, 0.88);
+    font-weight: 700;
+}
+
+.lead {
+    font-size: $step-2;
+    line-height: 1.7;
+    color: rgba($white, 0.92);
+    max-width: 28ch;
+    margin: 0 auto;
+}
+
+.dashboardHero {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem 1rem;
+    display: grid;
+    gap: 1.25rem;
+}
+
+.heroTextBlock {
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 3px;
+    background:
+        linear-gradient(135deg, rgba(#fff, 0.96), rgba(#fff8eb, 0.94)),
+        linear-gradient(120deg, rgba($orange, 0.12), rgba($dark-green, 0.08));
+    border: 1px solid rgba($orange, 0.2);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.08);
+
+    h1 {
+        font-size: $step-4;
+        line-height: 1.08;
+    }
+
+    .lead {
+        margin: 0;
+        max-width: 52ch;
+        color: rgba($text, 0.8);
+        font-size: $step-0;
+    }
+}
+
+.heroActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+.heroStats {
+    display: grid;
+    gap: 1rem;
+}
+
+.statCard {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1.15rem 1.2rem;
+    background: rgba(#fff, 0.88);
+    border-radius: 3px;
+    border: 1px solid rgba($dark-green, 0.12);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+
+    span {
+        color: rgba($text, 0.66);
+        font-size: $step--1;
+        text-transform: uppercase;
+        letter-spacing: 0.12rem;
+        font-weight: 700;
+    }
+
+    strong {
+        font-size: $step-4;
+        color: $dark-green;
+    }
+}
+
+.content {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem 4rem;
+}
+
+.mainContainer {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.titleRow {
+    display: grid;
+    gap: 1rem;
+    align-items: end;
+}
+
+.mainTitle {
+    font-size: $step-3;
+    margin-bottom: 0.45rem;
+}
+
+.sectionText {
+    line-height: 1.7;
+    color: rgba($text, 0.72);
+    max-width: 58ch;
+}
+
+.cardContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    gap: 2rem;
+}
+
+.emptyState {
+    border: 1px dashed rgba($border-gray, 0.8);
+    border-radius: 3px;
+    padding: 1.2rem 1.25rem;
+    background: rgba(#fff7e6, 0.8);
+    display: grid;
+    gap: 0.6rem;
+
+    h3 {
+        font-size: $step-1;
+    }
+
+    p {
+        line-height: 1.7;
+        color: rgba($text, 0.78);
+        max-width: 58ch;
+    }
+}
 
 @media (min-width: 560px) {
-    .home {
-        .content {
-            .main_container {
-                .card_container {
-                    grid-template-columns: 1fr 1fr;
-                }
-            }
-        }
+    .cardContainer {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
-
-
 @media (min-width: 768px) {
-    .home {
-        .img_container {
-            height: 500px;
+    .dashboardHero {
+        padding-top: 2.5rem;
+        grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.85fr);
+        align-items: start;
+    }
 
-            .banner_img {
-                height: 500px;
-            }
+    .heroTextBlock {
+        padding: 1.8rem;
+    }
 
-            .text_wrapper {
-                top: 0;
-                padding: 3rem 0 0 4rem;
+    .heroStats {
+        grid-template-columns: 1fr;
+    }
 
-                .text_container {
-                    padding: 3rem;
-                    max-width: 630px;
-                    height: 400px;
-                    background-color: $dark-green-80 ;
-                    bottom: 4rem;
-                    right: 0;
-                    left: 6%;
-                    border-radius: 3px;
+    .titleRow {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
 
-
-                    h1 {
-                        font-size: $step-8;
-                    }
-
-                    p {
-                        margin-top: 1.5rem;
-                        font-size: $step-4;
-
-                    }
-                }
-            }
-
-        }
-
-        .content {
-            padding: 4rem 1rem;
-
-            .main_container {
-           
-
-                .main_title {
-                    font-size: $step-4;
-                }
-            }
-        }
+    .guestContent {
+        padding: 3rem;
     }
 }
 
 @media (min-width: 992px) {
-    .home {
-        .content {
-            flex-direction: row;
-
-            .main_container {
-                .card_container {
-                    grid-template-columns: 1fr 1fr 1fr;
-                }
-            }
-
-            .aside {
-                padding-top: 5.6rem;
-                max-width: 300px;
-            }
-
-
-        }
+    .cardContainer {
+        grid-template-columns: 1fr 1fr 1fr;
     }
 }
-
 
 @media (min-width: 1400px) {
-    .home {
-        .img_container {
-            .text_wrapper {
-                top: 0;
-                padding: 3rem 0;
-            }
-        }
-
-        .content {
-            padding: 4rem 0;
-                 .main_container {
-                .card_container {
-                    grid-template-columns: 1fr 1fr 1fr 1fr;
-                }
-            }
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-:global(.no-hover) {
-    .home {
-        .content {
-            .aside {
-                .category_container {
-                    li {
-                        &:hover {
-                            background: transparent;
-                        }
-
-                        a:hover {
-
-                            color: inherit;
-                            transform: none;
-                        }
-                    }
-                }
-            }
-        }
-
-        .subscribtion {
-            .form_container {
-                .subscribe_btn:hover {
-                    color: $dark-green;
-                    background: transparent;
-                }
-            }
-        }
+    .dashboardHero,
+    .content {
+        padding-left: 0;
+        padding-right: 0;
     }
 }

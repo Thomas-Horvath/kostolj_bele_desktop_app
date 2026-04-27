@@ -45,7 +45,7 @@ export default function SignIn() {
             [result.field]: result.message,
           }));
         } else {
-          setError(result?.message || "Nem sikerult bejelentkezni.");
+          setError(result?.message || "Nem sikerült bejelentkezni.");
         }
         return;
       }
@@ -53,7 +53,7 @@ export default function SignIn() {
       router.refresh();
       router.push("/profil");
     } catch {
-      setError("Varatlan hiba tortent a bejelentkezes soran.");
+      setError("Váratlan hiba történt a bejelentkezés során.");
     } finally {
       setIsSubmitting(false);
     }
@@ -109,7 +109,7 @@ export default function SignIn() {
           {error || runtimeError || ""}
         </p>
         <button type="submit" className="btn-orange" disabled={isSubmitting}>
-          {isSubmitting ? "Belepes..." : "Bejelentkezes"}
+          {isSubmitting ? "Belépés..." : "Bejelentkezés"}
         </button>
       </form>
     </div>

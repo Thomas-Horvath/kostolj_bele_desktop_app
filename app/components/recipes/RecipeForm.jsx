@@ -19,7 +19,7 @@ import {
 export default function RecipeForm({
   initialData,
   onSubmit,
-  submitLabel = "Kuldes",
+  submitLabel = "Küldés",
 }) {
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
@@ -65,53 +65,53 @@ export default function RecipeForm({
     const nextErrors = {};
 
     if (!name.trim()) {
-      nextErrors.name = "A recept neve kotelezo.";
+      nextErrors.name = "A recept neve kötelező.";
     }
 
     if (!typeParamName) {
-      nextErrors.typeParamName = "A kategoria kivalasztasa kotelezo.";
+      nextErrors.typeParamName = "A kategória kiválasztása kötelező.";
     }
 
     if (availableSubtypes.length > 0 && !subtypeParamName) {
-      nextErrors.subtypeParamName = "Az alkategoria kivalasztasa kotelezo.";
+      nextErrors.subtypeParamName = "Az alkategória kiválasztása kötelező.";
     }
 
     ingredients.forEach((ingredient, index) => {
       if (!ingredient.name.trim()) {
-        nextErrors[`ingredient-name-${index}`] = "A hozzavalo neve kotelezo.";
+        nextErrors[`ingredient-name-${index}`] = "A hozzávaló neve kötelező.";
       }
 
       if (!ingredient.amount.trim()) {
         nextErrors[`ingredient-amount-${index}`] =
-          "A mennyiseg megadasa kotelezo.";
+          "A mennyiség megadása kötelező.";
       }
 
       if (!ingredient.unit) {
         nextErrors[`ingredient-unit-${index}`] =
-          "A mertekegyseg kivalasztasa kotelezo.";
+          "A mértékegység kiválasztása kötelező.";
       }
     });
 
     steps.forEach((step, index) => {
       if (!step.content.trim()) {
-        nextErrors[`step-content-${index}`] = "A lepes leirasa kotelezo.";
+        nextErrors[`step-content-${index}`] = "A lépés leírása kötelező.";
       }
 
       if (!String(step.timer).trim()) {
-        nextErrors[`step-timer-${index}`] = "Az ido megadasa kotelezo.";
+        nextErrors[`step-timer-${index}`] = "Az idő megadása kötelező.";
       }
     });
 
     const shouldRequireFile = !initialData?.imageURL;
     if (shouldRequireFile && !file) {
-      nextErrors.image = "Uj recepthez kep feltoltese kotelezo.";
+      nextErrors.image = "Új recepthez kép feltöltése kötelező.";
     }
 
     if (file) {
       if (!SUPPORTED_RECIPE_IMAGE_TYPES.includes(file.type)) {
-        nextErrors.image = `Csak ${RECIPE_IMAGE_TYPE_LABEL} formatumu kepet tolthetsz fel.`;
+        nextErrors.image = `Csak ${RECIPE_IMAGE_TYPE_LABEL} formátumú képet tölthetsz fel.`;
       } else if (file.size > MAX_RECIPE_IMAGE_SIZE_BYTES) {
-        nextErrors.image = "A feltoltott kep tul nagy. A maximalis meret 8 MB.";
+        nextErrors.image = "A feltöltött kép túl nagy. A maximális méret 8 MB.";
       }
     }
 
@@ -180,7 +180,7 @@ export default function RecipeForm({
     const file = e.target.elements["img-url"].files[0];
 
     if (!validateForm(file)) {
-      setFormError("Kerlek javitsd a pirossal jelolt mezoket.");
+      setFormError("Kérlek javítsd a pirossal jelölt mezőket.");
       return;
     }
 
@@ -202,10 +202,10 @@ export default function RecipeForm({
       {formError ? <p className={style.form_feedback_error}>{formError}</p> : null}
 
       <div className={style.field_group}>
-        <h2>Nev</h2>
+        <h2>Név</h2>
         <p className={style.helper_text}>
-          Adj meg egy rovid, jol felismerheto nevet, ami alapjan kesobb is konnyu
-          lesz rakeresni.
+          Adj meg egy rövid, jól felismerhető nevet, ami alapján később is könnyű
+          lesz rákeresni.
         </p>
         <div className={style.row}>
           <input
@@ -213,7 +213,7 @@ export default function RecipeForm({
             name="name"
             className={clsx({ [style.field_error]: Boolean(getFieldError("name")) })}
             value={name}
-            placeholder="Peldaul: Hazi almas pite"
+            placeholder="Például: Házi almás pite"
             onChange={(e) => {
               setName(e.target.value);
               if (e.target.value.trim()) {
@@ -228,10 +228,10 @@ export default function RecipeForm({
       </div>
 
       <div className={style.field_group}>
-        <h2>Megjegyzes</h2>
+        <h2>Megjegyzés</h2>
         <p className={style.helper_text}>
-          Ide irhatsz egy rovid tippet, talalasi otletet vagy barmi hasznos
-          feljegyzest a recepthez.
+          Ide írhatsz egy rövid tippet, tálalási ötletet vagy bármi hasznos
+          feljegyzést a recepthez.
         </p>
         <div className={style.row}>
           <textarea
@@ -239,16 +239,16 @@ export default function RecipeForm({
             className={style.full_width_input}
             value={note}
             rows={4}
-            placeholder="Peldaul: Masnap meg finomabb, hutoben 2 napig elall."
+            placeholder="Például: Másnap még finomabb, hűtőben 2 napig eláll."
             onChange={(e) => setNote(e.target.value)}
           />
         </div>
       </div>
 
       <div className={style.field_group}>
-        <h2>Tipus</h2>
+        <h2>Típus</h2>
         <p className={style.helper_text}>
-          Valassz olyan kategoriat, ami a legjobban illik a recept fo jellegehez.
+          Válassz olyan kategóriát, ami a legjobban illik a recept fő jellegéhez.
         </p>
         <select
           value={typeParamName}
@@ -264,7 +264,7 @@ export default function RecipeForm({
           }}
         >
           <option value="" disabled>
-            Tipus
+            Típus
           </option>
           {CATEGORY_DEFINITIONS.map((category) => (
             <option key={category.paramName} value={category.paramName}>
@@ -281,10 +281,10 @@ export default function RecipeForm({
 
       {availableSubtypes.length > 0 ? (
         <div className={style.field_group}>
-          <h2>Alkategoria</h2>
+          <h2>Alkategória</h2>
           <p className={style.helper_text}>
-            A valasztott kategoriaban jelold ki a legpontosabb alkategoriat is,
-            mert a menteshez ez kotelezo.
+            A választott kategóriában jelöld ki a legpontosabb alkategóriát is,
+            mert a mentéshez ez kötelező.
           </p>
           <select
             value={subtypeParamName}
@@ -300,7 +300,7 @@ export default function RecipeForm({
             }}
           >
             <option value="" disabled>
-              Alkategoria
+              Alkategória
             </option>
             {availableSubtypes.map((subtype) => (
               <option key={subtype.paramName} value={subtype.paramName}>
@@ -317,16 +317,16 @@ export default function RecipeForm({
       ) : null}
 
       <div className={style.field_group}>
-        <h2>Hozzavalok</h2>
+        <h2>Hozzávalók</h2>
         <p className={style.helper_text}>
-          Minden hozzavalot kulon sorban adj meg. Igy a recept kesobb is jol
-          attekintheto marad.
+          Minden hozzávalót külön sorban adj meg. Így a recept később is jól
+          áttekinthető marad.
         </p>
 
         {ingredients.map((ingredient, i) => (
           <div key={i} className={`${style.row} ${style.item_card}`}>
             <div className={style.item_header}>
-              <h3>{i + 1}. hozzavalo</h3>
+              <h3>{i + 1}. hozzávaló</h3>
             </div>
 
             <input
@@ -336,7 +336,7 @@ export default function RecipeForm({
               className={clsx(style.full_width_input, {
                 [style.field_error]: Boolean(getFieldError(`ingredient-name-${i}`)),
               })}
-              placeholder="Peldaul: liszt, rizs, tej, fokhagyma"
+              placeholder="Például: liszt, rizs, tej, fokhagyma"
               value={ingredient.name}
               onChange={(e) => {
                 setIngredients((prev) => {
@@ -363,7 +363,7 @@ export default function RecipeForm({
                 className={clsx({
                   [style.field_error]: Boolean(getFieldError(`ingredient-amount-${i}`)),
                 })}
-                placeholder="Mennyiseg"
+                placeholder="Mennyiség"
                 value={ingredient.amount}
                 onChange={(e) => {
                   setIngredients((prev) => {
@@ -395,7 +395,7 @@ export default function RecipeForm({
                 }}
               >
                 <option value="" disabled>
-                  Mertekegyseg
+                  Mértékegység
                 </option>
                 {MEASUREMENT_UNITS.map((unit) => (
                   <option key={unit.value} value={unit.value}>
@@ -415,7 +415,7 @@ export default function RecipeForm({
                   });
                 }}
               >
-                Torles
+                Törlés
               </button>
             </div>
             {getFieldError(`ingredient-amount-${i}`) ||
@@ -455,21 +455,21 @@ export default function RecipeForm({
               ]);
             }}
           >
-            Uj hozzavalo hozzaadasa
+            Új hozzávaló hozzáadása
           </button>
         </div>
       </div>
 
       <div className={style.field_group}>
-        <h2>Elkeszites</h2>
+        <h2>Elkészítés</h2>
         <p className={style.helper_text}>
-          A lepesekhez nyugodtan irj hosszabb leirast is. Minden fontos instrukcio
-          kulon lepesben legyen.
+          A lépésekhez nyugodtan írj hosszabb leírást is. Minden fontos instrukció
+          külön lépésben legyen.
         </p>
         {steps.map((step, i) => (
           <div key={i} className={`${style.row} ${style.step_row}`}>
             <div className={style.item_header}>
-              <h3>{i + 1}. lepes</h3>
+              <h3>{i + 1}. lépés</h3>
             </div>
 
             <textarea
@@ -477,7 +477,7 @@ export default function RecipeForm({
               className={clsx(style.full_width_input, {
                 [style.field_error]: Boolean(getFieldError(`step-content-${i}`)),
               })}
-              placeholder="Ird le reszletesen, mit kell csinalni ebben a lepesben..."
+              placeholder="Írd le részletesen, mit kell csinálni ebben a lépésben..."
               value={step.content}
               rows={4}
               onChange={(e) => {
@@ -504,7 +504,7 @@ export default function RecipeForm({
                 className={clsx({
                   [style.field_error]: Boolean(getFieldError(`step-timer-${i}`)),
                 })}
-                placeholder="Ido percben"
+                placeholder="Idő percben"
                 min={1}
                 value={step.timer}
                 onChange={(e) => {
@@ -530,7 +530,7 @@ export default function RecipeForm({
                   });
                 }}
               >
-                Torles
+                Törlés
               </button>
             </div>
             {getFieldError(`step-timer-${i}`) ? (
@@ -560,16 +560,16 @@ export default function RecipeForm({
               ]);
             }}
           >
-            Uj lepes hozzaadasa
+            Új lépés hozzáadása
           </button>
         </div>
       </div>
 
       <div className={style.field_group}>
-        <h2>Kep</h2>
+        <h2>Kép</h2>
         <p className={style.helper_text}>
-          Erdemes allo vagy fekvo, jo minosegu etelfotot feltolteni, mert ez
-          jelenik meg a receptlistaban is.
+          Érdemes álló vagy fekvő, jó minőségű ételfotót feltölteni, mert ez
+          jelenik meg a receptlistában is.
         </p>
         <div className={`${style.row} ${style.media_row}`}>
           <input
@@ -587,10 +587,10 @@ export default function RecipeForm({
           />
           <i>
             {initialData?.imageURL
-              ? "Ha uj kepet valasztasz, a regi le lesz cserelve."
-              : "Uj recepthez legalabb egy kep feltoltese kotelezo."}
+              ? "Ha új képet választasz, a régi le lesz cserélve."
+              : "Új recepthez legalább egy kép feltöltése kötelező."}
           </i>
-          <i>Engedelyezett formatumok: {RECIPE_IMAGE_TYPE_LABEL}. Max. 8 MB.</i>
+          <i>Engedélyezett formátumok: {RECIPE_IMAGE_TYPE_LABEL}. Max. 8 MB.</i>
           {getFieldError("image") ? (
             <p className={style.field_error_text}>{getFieldError("image")}</p>
           ) : null}

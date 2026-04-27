@@ -1,62 +1,62 @@
 # Kóstolj Bele! Desktop App
 
-Ez a projekt a már létező **Kóstolj Bele!** receptes weboldal desktop alkalmazássá alakított változata.
+Ez a projekt a már létező **Kóstolj Bele!** receptes weboldal privát Windows desktop appá alakított változata.
 
-Az átalakítás célja, hogy az alkalmazás ne nyilvános weboldalként működjön, hanem privát, helyben futó Windows desktop appként. A személyes cél az, hogy a feleségem saját receptgyűjteményként, kényelmesen és webes publikálás nélkül tudja használni.
+Az átalakítás célja az volt, hogy az alkalmazás ne nyilvános weboldalként működjön, hanem helyben futó, személyes receptgyűjteményként. A használati cél egyszerű: a feleségem saját receptjeit tudja benne kezelni kényelmesen, publikus webes üzemeltetés nélkül.
 
 ## Röviden
 
 - Next.js alapú React felület
-- Electron desktop alkalmazáskeret
-- Prisma ORM 7
+- Electron desktop shell
+- Prisma ORM `6.16.2`
 - SQLite adatbázis
 - saját desktop autentikáció
-- helyi receptképek kezelése
-- Next API route-ok nélkül, Electron IPC + service rétegen keresztül
+- helyi receptkép-kezelés
+- Electron IPC + `lib/services/*` backend logika
+- Next `/app/api` route-ok nélkül
 
 ## Mit tud az app?
 
 - receptek létrehozása, szerkesztése és törlése
 - receptképek mentése, cseréje és törlése
-- kategória alapú böngészés
+- kategória és alkategória alapú böngészés
 - receptkeresés
 - kedvencek kezelése
-- receptértékelés
 - profil oldal
 - admin alapú felhasználókezelés
-- bejelentkezett felhasználó megjegyzése desktop sessionben
+- backup export/import
+- az utoljára bejelentkezett user megjegyzése desktop sessionben
 
 ## Miért desktop app?
 
-Az eredeti app weboldalként készült, de ennél a verziónál a cél már nem a publikus elérés vagy hosting.
+Az eredeti app weboldalként indult, de ennél a verziónál a cél már nem a hosting vagy a publikus elérés.
 
 A desktop verzió előnyei:
 
-- privát használatra alkalmasabb
-- nem kell publikus szerver
-- az adatbázis és a képek helyben kezelhetők
-- egyszerűbb autentikáció elég
-- alkalmazásszerűbb felhasználói élmény adható
+- privát használatra alkalmas
+- nem kell külön szerver
+- az adatbázis és a receptképek helyben vannak
+- egyszerűbb authentikáció elég
+- alkalmazásszerűbb használatot ad
 
 ## Technológiai stack
 
 - Next.js `15.5`
 - React `19`
 - Electron `41`
-- Prisma ORM `7`
+- Prisma ORM `6.16.2`
 - SQLite
-- `better-sqlite3`
 - Sass moduláris stílusok
 
 ## Architektúra
 
-A projektben a régi Next backend API route-ok ki lettek vezetve.
+A régi webes backend route-ok ki lettek vezetve.
 
 Az új desktop adatfolyam:
 
 ```text
 React UI
-  -> lib/renderer/api kliens
+  -> lib/renderer/api
   -> Electron preload
   -> Electron IPC
   -> lib/services
@@ -64,38 +64,43 @@ React UI
   -> SQLite
 ```
 
-Ez azt jelenti, hogy a React felület nem közvetlenül adatbázist hív, és már nem `/api/...` útvonalakon keresztül kommunikál. A backend jellegű feladatok az Electron main process és a service réteg mögé kerültek.
+Ez azt jelenti, hogy a React felület már nem `/api/...` útvonalakat hív, hanem az Electron main process mögött futó üzleti logikát használja.
 
 ## Fontos mappák
 
 - `app/`: Next.js App Router felület és React komponensek
-- `electron/`: Electron main process, preload, IPC csatornák és desktop állapot
-- `lib/services/`: üzleti logika, Prisma műveletek, recept/auth/profil/favorite/rating logika
-- `lib/renderer/api/`: renderer oldali kliensréteg, ami az Electron preloadon keresztül hív
-- `prisma/`: Prisma schema, migrációk és seed
-- `public/`: statikus assetek, logó és app ikon
-- `scripts/`: fejlesztői és teszt scriptek
-- `docs/`: Electron átállási dokumentáció
+- `electron/`: Electron main process, preload, IPC csatornák, session és desktop bootstrap
+- `lib/services/`: üzleti logika auth, receptek, profil, kedvencek és backup kezeléshez
+- `lib/renderer/api/`: renderer oldali kliensréteg az Electron preload fölött
+- `prisma/`: Prisma schema, seed, fejlesztői adatbázis
+- `generated/prisma/`: generált Prisma kliens
+- `public/`: statikus assetek, logó, app ikon
+- `uploads/recipe-images/`: fejlesztői projektben seedelt receptképek
+- `scripts/`: buildhez és karbantartáshoz használt segédscriptek
+- `docs/`: bővebb Electron dokumentáció
+- `HOSTING_DOC/`: átállási napló
 
 ## Környezeti változók
 
-Másold le az `.env.example` fájlt `.env` néven.
-
-Fejlesztői SQLite példa:
+Példa:
 
 ```env
 DATABASE_URL="file:./dev.db"
 ```
 
+Fejlesztés közben az Electron app közvetlenül a projekt `prisma/dev.db` adatbázisát használja.  
+Telepített appnál a DB az AppData alá kerül.
+
 ## Telepítés fejlesztéshez
 
 ```bash
 npm install
-npx prisma migrate dev
-npx prisma db seed
+npx prisma generate
+npx prisma db push --force-reset
+node prisma/seed.js
 ```
 
-## Desktop fejlesztői indítás
+## Fejlesztői indítás
 
 ```bash
 npm run dev:desktop
@@ -103,10 +108,10 @@ npm run dev:desktop
 
 Ez egyszerre indítja:
 
-- a Next fejlesztői renderert `http://localhost:3001` címen
+- a Next fejlesztői renderert `http://localhost:3010` címen
 - az Electron desktop shellt
 
-## Tesztek és ellenőrzés
+## Ellenőrzések
 
 Lint:
 
@@ -120,38 +125,11 @@ Desktop smoke teszt:
 npm run test:desktop
 ```
 
-A smoke teszt végigpróbálja a fő desktop backend folyamatokat:
-
-- login
-- recept létrehozás képpel
-- recept frissítés képcserével
-- recept törlés képtörléssel
-- kedvenc kapcsolás
-- rating mentés
-- profil adatok
-- admin user létrehozás
-
-## Natív SQLite modul megjegyzés
-
-Az Electron és a sima Node eltérő natív modul ABI-t használhat. Emiatt a `better-sqlite3` modult néha újra kell fordítani.
-
-Electron futtatáshoz:
-
-```bash
-npm run rebuild:electron
-```
-
-Sima Node futtatáshoz:
-
-```bash
-npm run rebuild:node
-```
-
-Ha `NODE_MODULE_VERSION` vagy `better_sqlite3.node` hibát látsz, általában ez a két parancs valamelyike a megoldás.
+Megjegyzés: a smoke teszt bizonyos Windows környezetekben helyi `Prisma spawn EPERM` miatt érzékeny lehet. Ez nem feltétlenül ugyanaz, mint a telepített app működése.
 
 ## Build
 
-Webes build:
+Web build:
 
 ```bash
 npm run build:web
@@ -163,28 +141,71 @@ Desktop build:
 npm run build:desktop
 ```
 
-A desktop build kimenete a `release/` mappába kerül.
+A desktop build a `release/` mappába kerül.
+
+Telepítő például:
+
+- `release/Kostolj Bele Setup 2.0.1.exe`
 
 ## Seedelt belépési adatok
 
-Alap teszt belépés:
-
-```text
-Felhasználónév: Test
-Jelszó: Password
-```
-
-Admin felhasználó:
+Admin user:
 
 ```text
 Felhasználónév: Tamás
 Jelszó: Password
 ```
 
+Normál user:
 
+```text
+Felhasználónév: Katinka
+Jelszó: Password
+```
+
+## Fontos desktop útvonalak
+
+Telepített app helye:
+
+```text
+C:\Users\<felhasználó>\AppData\Local\Programs\kostolj_bele
+```
+
+App adatbázis:
+
+```text
+C:\Users\<felhasználó>\AppData\Roaming\kostolj_bele\db\app.db
+```
+
+Receptképek:
+
+```text
+C:\Users\<felhasználó>\AppData\Roaming\kostolj_bele\recipe-images
+```
+
+Main process log:
+
+```text
+C:\Users\<felhasználó>\AppData\Roaming\kostolj_bele\logs\main.log
+```
+
+## Fontos Prisma megjegyzés
+
+A telepített appnál a Prisma `binary` engine Windows alatt `spawn EPERM` hibát okozott bejelentkezéskor és más első adatbázis-műveleteknél.
+
+Ezért a projekt most `library` engine-t használ a [schema.prisma](./prisma/schema.prisma) fájlban. Ez stabilabb a telepített Electron appban, mert nem külön `query-engine` folyamatot indít, hanem az app folyamatán belül tölti be a Prisma motort.
 
 ## Állapot
 
-Az app jelenlegi állapota: desktop átállás alatt, de a fő Electron/service alapú folyamatok már működnek.
+Az app fő desktop folyamatai jelenleg működnek:
 
-Az `/app/api` mappa törölve lett, a fő backend logika már az Electron IPC és a `lib/services/*` réteg mögött van.
+- bejelentkezés
+- profil
+- receptek listázása
+- kategória és alkategória szűrés
+- kedvencek
+- recept létrehozás, szerkesztés, törlés
+- képek kezelése
+- backup export/import
+
+Az `/app/api` mappa törölve lett, a fő backend logika már az Electron IPC és a `lib/services/*` réteg mögött fut.

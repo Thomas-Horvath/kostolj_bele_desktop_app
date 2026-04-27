@@ -1,73 +1,53 @@
-import Image from 'next/image';
-import styles from './styles/home.module.scss';
-import HomeRecipesContainer from './components/recipes/HomeRecipesContainer';
+"use client";
 
+import { useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import styles from "./styles/home.module.scss";
+import Spinner from "./components/ui/Spinner";
+import { useDesktopAuth } from "./context/DesktopAuthContext";
 
-export default async function Home() {
+export default function Home() {
+  const router = useRouter();
+  const { status, isAuthenticated } = useDesktopAuth();
+
+  useEffect(() => {
+    if (status === "authenticated" && isAuthenticated) {
+      router.replace("/profil");
+    }
+  }, [isAuthenticated, router, status]);
+
+  if (status === "loading") {
+    return <Spinner />;
+  }
+
+  if (isAuthenticated) {
+    return <Spinner />;
+  }
+
   return (
-    <div className={styles.home}>
-      <div className={styles.img_container}>
+    <section className={styles.home}>
+      <div className={styles.guestHero}>
         <Image
-          className={styles.banner_img}
+          className={styles.guestBanner}
           src="/banner6.webp"
-          alt="Banner kép"    // Kép leírása
-          width={2200}        // Kép szélessége pixelben
-          height={400}
+          alt="Kóstolj Bele! főoldali banner"
+          width={2200}
+          height={1200}
           sizes="100vw"
           priority
         />
-        <div className={styles.text_wrapper}>
-          <div className={styles.text_container}>
-            <h1>Receptek</h1>
-            <p>Főzz, kóstolj, alkoss!</p>
-          </div>
+        <div className={styles.guestOverlay} />
+        <div className={styles.guestContent}>
+          <p className={styles.eyebrow}>Asztali receptgyűjtemény</p>
+          <h1>Kóstolj Bele!</h1>
+          <p className={styles.lead}>A saját receptjeid egy helyen!</p>
+          <Link href="/login" className="btn-orange">
+            Bejelentkezés
+          </Link>
         </div>
       </div>
-
-
-
-
-      <div className={styles.content}>
-
-        {/* <SideBar /> */}
-        <div className={styles.main_container}>
-
-          <h2 className={styles.main_title}>Legjobb receptek</h2>
-            <HomeRecipesContainer />
-        </div>
-      </div>
-
-
-      {/* <div className={styles.subscribtion}>
-
-        <h3>Iratkozz fel hírlevelünkre!</h3>
-        <h4>
-          Legyél naprakész a legújabb receptjeinkkel, konyhai tippekkel és inspiráló ötletekkel!
-        </h4>
-
-
-        <div className={styles.form_container}>
-          <form action="" >
-            <div className={styles.input_content}>
-              <input className={styles.input} type="text" placeholder="Neved" />
-              <input className={styles.input} type="text" placeholder="E-mail címed." />
-              <button className={`${styles.subscribe_btn} btn-green-border`} >Feliratkozás!</button>
-            </div>
-
-
-            <label htmlFor="checkbox" className={styles.checkbox_container}>
-              <input className={styles.checkbox} id="checkbox" type="checkbox" />
-              <div className={styles.custom_checkbox}></div>
-              A gombra kattintva elfogadom a személyes adataim kezelését az Adatvédelmi tájékoztatóban leírtaknak megfelelően.
-            </label>
-
-          </form>
-        </div>
-
-
-      </div> */}
-
-    </div>
+    </section>
   );
-
 }

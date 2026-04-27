@@ -81,7 +81,7 @@ export default function ProfilPage() {
   // hogy ne maradjon a félkész UI-ban unauthenticated állapotban.
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/login");
+      router.replace("/");
     }
   }, [status, router]);
 
@@ -257,15 +257,28 @@ export default function ProfilPage() {
       </div>
 
       <div className={styles.grid}>
+        <section className={`${styles.panel} ${styles.createRecipeBanner}`}>
+          <div className={styles.createRecipeBannerInner}>
+            <div>
+              <p className={styles.sectionLabel}>Gyors indítás</p>
+              <h2>Új recept felvétele</h2>
+              <p className={styles.bannerText}>
+                Ha most szeretnél elmenteni egy új ételt, innen egy kattintással
+                elindíthatod a recept létrehozását.
+              </p>
+            </div>
+            <Link className="btn-orange" href="/receptek/ujrecept">
+              Új recept létrehozása
+            </Link>
+          </div>
+        </section>
+
         <section className={styles.panel}>
           <div className={styles.panelHeader}>
             <div>
               <p className={styles.sectionLabel}>Receptek</p>
               <h2>Saját receptjeid</h2>
             </div>
-            <Link className="btn-green" href="/receptek/ujrecept">
-              Új recept hozzáadása
-            </Link>
           </div>
 
           {recipes.length === 0 ? (
@@ -450,7 +463,7 @@ export default function ProfilPage() {
       <section className={`${styles.panel} ${styles.backupPanel}`}>
         <div className={styles.panelHeader}>
           <div>
-            <p className={styles.backupLabel}>Adatvedelem</p>
+            <p className={styles.backupLabel}>Adatvédelem</p>
             <h2>Biztonsági mentés és visszaállítás</h2>
           </div>
         </div>

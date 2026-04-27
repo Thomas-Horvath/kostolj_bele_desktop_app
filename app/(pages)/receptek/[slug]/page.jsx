@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import style from "../../../styles/recipeDetail.module.scss";
-import RateRecipe from "../../../components/recipes/RateRecipe";
+import FavoriteButton from "../../../components/recipes/FavoriteButton";
 import Spinner from "../../../components/ui/Spinner";
 import { formatIngredientQuantity } from "../../../../lib/recipeOptions";
 import { getRecipeImageSrc } from "../../../../lib/recipeImageUrl";
 import recipesClient from "../../../../lib/renderer/api/recipesClient";
+import { useDesktopAuth } from "../../../context/DesktopAuthContext";
 
 
 
@@ -18,6 +19,8 @@ function capitalize(value) {
 }
 
 export default function RecipeDetailsPage() {
+  const router = useRouter();
+  const { status } = useDesktopAuth();
   const params = useParams();
   const slug = typeof params?.slug === "string" ? params.slug : "";
   const [recipe, setRecipe] = useState(null);
@@ -25,7 +28,21 @@ export default function RecipeDetailsPage() {
   const [pageError, setPageError] = useState("");
 
   useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/login");
+    }
+  }, [router, status]);
+
+  useEffect(() => {
     let isMounted = true;
+
+    if (status !== "authenticated") {
+      setRecipe(null);
+      setLoading(false);
+      return () => {
+        isMounted = false;
+      };
+    }
 
     async function loadRecipe() {
       try {
@@ -45,7 +62,7 @@ export default function RecipeDetailsPage() {
           setPageError(
             error instanceof Error
               ? error.message
-              : "Nem sikerult betolteni a receptet."
+              : "Nem sikerült betölteni a receptet."
           );
         }
       } finally {
@@ -62,9 +79,9 @@ export default function RecipeDetailsPage() {
     return () => {
       isMounted = false;
     };
-  }, [slug]);
+  }, [slug, status]);
 
-  if (loading) {
+  if (loading || status !== "authenticated") {
     return <Spinner />;
   }
 
@@ -74,9 +91,9 @@ export default function RecipeDetailsPage() {
         <div className={style.hero}>
           <div className={style.hero_content}>
             <p className={style.eyebrow}>Recept részletek</p>
-            <h1>Nem sikerult betolteni a receptet</h1>
+            <h1>Nem sikerült betölteni a receptet</h1>
             <p className={style.note_text}>
-              {pageError || "A keresett recept nem erheto el."}
+              {pageError || "A keresett recept nem érhető el."}
             </p>
           </div>
         </div>
@@ -88,32 +105,50 @@ export default function RecipeDetailsPage() {
     <section className={style.page_container}>
       <div className={style.hero}>
         <div className={style.hero_content}>
-          <p className={style.eyebrow}>Recept részletek</p>
-          <h1 className={style.name}>{recipe.name}</h1>
-          <div className={style.meta_row}>
-            <span className={style.meta_chip}>Kategória: {recipe.type.name}</span>
-            {recipe.subtype ? (
-              <span className={style.meta_chip}>
-                Alkategória: {recipe.subtype.name}
-              </span>
-            ) : null}
-            <span className={style.meta_chip}>
-              Szerző: {recipe.author?.name || "Ismeretlen"}
-            </span>
+          <div className={style.hero_intro}>
+            <p className={style.eyebrow}>Recept részletek</p>
+            <h1 className={style.name}>{recipe.name}</h1>
+            <p className={style.hero_text}>
+              Itt egy helyen látod a recept legfontosabb adatait, a hozzávalókat
+              és az elkészítés lépéseit.
+            </p>
           </div>
-          <RateRecipe recipeId={recipe.id} initialScore={recipe.rate} />
+
+          <div className={style.meta_section}>
+            <div className={style.meta_group}>
+              <span className={style.meta_label}>Kategória</span>
+              <span className={style.meta_chip}>{recipe.type.name}</span>
+            </div>
+
+            {recipe.subtype ? (
+              <div className={style.meta_group}>
+                <span className={style.meta_label}>Alkategória</span>
+                <span className={style.meta_chip}>{recipe.subtype.name}</span>
+              </div>
+            ) : null}
+
+            <div className={style.meta_group}>
+              <span className={style.meta_label}>Szerző</span>
+              <span className={style.meta_chip}>
+                {recipe.author?.name || "Ismeretlen"}
+              </span>
+            </div>
+          </div>
         </div>
 
         <div className={style.image_card}>
-          {/* Electron alatt a receptkepet a main process sajat `kb-image://`
-              protokollja adja vissza, ezert itt nem a Next Image optimalizalot,
-              hanem natív img taget hasznalunk. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={getRecipeImageSrc(recipe.imageURL)}
-            className={style.img}
-            alt={recipe.name}
-          />
+          <FavoriteButton recipeId={recipe.id} />
+          <div className={style.image_frame}>
+            {/* Electron alatt a receptkepet a main process sajat `kb-image://`
+                protokollja adja vissza, ezert itt nem a Next Image optimalizalot,
+                hanem natív img taget hasznalunk. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={getRecipeImageSrc(recipe.imageURL)}
+              className={style.img}
+              alt={recipe.name}
+            />
+          </div>
         </div>
       </div>
 

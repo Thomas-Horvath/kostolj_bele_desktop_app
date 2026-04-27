@@ -96,27 +96,30 @@ a {
 
 .btn-green-border {
   @include btn-content(transparent, $dark-green );
-  border: 1px solid $dark-green;
   -webkit-tap-highlight-color: transparent;
-
-  &:active {
-    transform: none;
-  }
-
 }
 
 .no-hover {
   .btn-green:hover {
     background: $dark-green;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transform: none;
   }
 
   .btn-green:active , .btn.orange:active{
-    transform: scale(1);
+    transform: none;
   }
 
   .btn-orange:hover {
     background: $orange; 
-
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transform: none;
   }
 
+  .btn-green-border:hover {
+    background-color: rgba($dark-green, 0.04);
+    border-color: rgba($dark-green, 0.42);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transform: none;
+  }
 }

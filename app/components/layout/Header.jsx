@@ -12,7 +12,7 @@ import { useDesktopAuth } from "../../context/DesktopAuthContext";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const { isAuthenticated, logout } = useDesktopAuth();
+  const { isAuthenticated, logout, status } = useDesktopAuth();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -21,8 +21,7 @@ const Header = () => {
   const handleSignOut = async () => {
     setIsOpen(false);
     await logout();
-    router.refresh();
-    router.push("/");
+    router.replace("/");
   };
 
   return (
@@ -39,21 +38,8 @@ const Header = () => {
           <span className={styles.span}>Kóstolj Bele!</span>
         </Link>
         <nav className={`${styles.nav} ${isOpen ? styles.open : ""}`}>
-          <Link href="/" onClick={() => setIsOpen(false)}>
-            Főoldal
-          </Link>
-          <Link href="/receptek" onClick={() => setIsOpen(false)}>
-            Receptek
-          </Link>
-          {isAuthenticated ? (
+          {status === "loading" ? null : isAuthenticated ? (
             <>
-              <Link
-                href="/receptek/ujrecept"
-                className={styles.newrecipe}
-                onClick={() => setIsOpen(false)}
-              >
-                Új recept
-              </Link>
               <Link
                 href="/profil"
                 className={styles.profil}
@@ -61,12 +47,25 @@ const Header = () => {
               >
                 Profil
               </Link>
+              <Link href="/receptek" onClick={() => setIsOpen(false)}>
+                Receptek
+              </Link>
+              <Link
+                href="/receptek/ujrecept"
+                className={styles.newrecipe}
+                onClick={() => setIsOpen(false)}
+              >
+                Új recept
+              </Link>
               <button className={styles.logout_btn} onClick={handleSignOut}>
                 Kijelentkezés
               </button>
             </>
           ) : (
             <>
+              <Link href="/" onClick={() => setIsOpen(false)}>
+                Főoldal
+              </Link>
               <Link href="/login" onClick={() => setIsOpen(false)}>
                 Bejelentkezés
               </Link>
